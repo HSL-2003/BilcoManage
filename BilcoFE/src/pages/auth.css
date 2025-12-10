@@ -1,0 +1,140 @@
+.auth-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background);
+  font-family: inherit;
+  color: var(--color-text-primary);
+}
+
+.auth-panel {
+  width: 100%;
+  max-width: 448px;
+  /* Google sign-in box width usually around 450px */
+  padding: 48px 40px 36px;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-1);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+}
+
+.auth-panel:hover {
+  box-shadow: var(--shadow-2);
+}
+
+.auth-brand {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.auth-brand-main {
+  display: block;
+  font-weight: 500;
+  font-size: 24px;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+}
+
+.auth-brand-sub {
+  display: block;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+.auth-title {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  text-align: center;
+  margin: 0 0 8px 0;
+}
+
+.auth-subtitle {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 1.5;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.auth-error {
+  font-size: 13px;
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: 16px;
+  height: 40px;
+  /* Slightly taller for primary action */
+  font-size: 14px;
+}
+
+.auth-footer {
+  margin-top: 32px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.auth-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+  color: var(--color-primary-hover);
+}
+
+.auth-cta-company {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+.auth-cta-btn:hover {
+  background-color: #f1f3f4;
+  color: var(--color-text-primary);
+}
+
+.auth-cta-icon {
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  .auth-panel {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    padding: 24px;
+  }
+}

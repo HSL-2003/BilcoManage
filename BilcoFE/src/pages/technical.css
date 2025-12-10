@@ -1,0 +1,272 @@
+/* Technical Dashboard Theme - Clean, Modern, Focus-oriented */
+
+:root {
+    --tech-bg: #f0f4f8;
+    --tech-surface: #ffffff;
+    --tech-primary: #007cc3;
+    /* Slightly different blue, more "industrial/technical" */
+    --tech-accent: #00c6d4;
+    /* Cyan for "fresh" look */
+    --tech-danger: #d93025;
+    --tech-warning: #f9ab00;
+    --tech-success: #0f9d58;
+    --tech-text-main: #172b4d;
+    --tech-text-sub: #5e6c84;
+    --tech-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --tech-radius: 20px;
+}
+
+.tech-root {
+    min-height: 100vh;
+    background-image:
+        radial-gradient(at 10% 10%, rgba(0, 124, 195, 0.05) 0%, transparent 60%),
+        radial-gradient(at 90% 90%, rgba(0, 198, 212, 0.05) 0%, transparent 60%);
+    background-color: var(--tech-bg);
+    padding: 32px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* HEADER */
+.tech-header {
+    margin-bottom: 40px;
+    animation: slideDown 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tech-welcome {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--tech-text-main);
+    letter-spacing: -0.5px;
+}
+
+.tech-date {
+    font-size: 16px;
+    color: var(--tech-text-sub);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* GRID LAYOUT */
+.tech-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+}
+
+@media (max-width: 1024px) {
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* CARDS */
+.tech-card {
+    background: var(--tech-surface);
+    border-radius: var(--tech-radius);
+    padding: 24px;
+    box-shadow: var(--tech-card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.tech-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+.tech-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--tech-text-main);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tech-card-title svg {
+    color: var(--tech-text-sub);
+}
+
+/* TIMELINE for Maintenance Schedule */
+.tech-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tech-task {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: #f8f9fa;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.tech-task:hover {
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tech-task.priority-high {
+    border-left-color: var(--tech-danger);
+}
+
+.tech-task.priority-normal {
+    border-left-color: var(--tech-primary);
+}
+
+.tech-task.priority-low {
+    border-left-color: var(--tech-success);
+}
+
+.tech-task-time {
+    min-width: 60px;
+    font-weight: 600;
+    color: var(--tech-text-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tech-task-content h4 {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    color: var(--tech-text-main);
+}
+
+.tech-task-content p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--tech-text-sub);
+}
+
+.tech-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 8px;
+}
+
+.badge-pending {
+    background: #fee2e2;
+    color: #d93025;
+}
+
+.badge-progress {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge-done {
+    background: #e6f4ea;
+    color: #137333;
+}
+
+/* QUICK STATS (Right Column) */
+.tech-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.tech-mini-stat {
+    background: linear-gradient(135deg, #ffffff 0%, #f4f8fb 100%);
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.tech-mini-val {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--tech-primary);
+    margin-bottom: 4px;
+}
+
+.tech-mini-lbl {
+    font-size: 12px;
+    color: var(--tech-text-sub);
+    font-weight: 500;
+}
+
+/* QUICK ACTIONS */
+.tech-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.btn-tech-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    background: white;
+    color: var(--tech-text-main);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+}
+
+.btn-tech-action:hover {
+    background: var(--tech-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 124, 195, 0.2);
+}
+
+/* ANIMATIONS */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-delay-1 {
+    animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+.animate-delay-2 {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.animate-delay-3 {
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+}

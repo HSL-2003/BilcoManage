@@ -1,0 +1,247 @@
+import { useState, useEffect, type FormEvent } from 'react'
+import MainLayout from '../layouts/MainLayout'
+import { apiGet, apiPut } from '../api/client'
+import { useAuth } from '../context/AuthContext'
+
+type UserProfile = {
+  // Removed hoTen as per user request (username is the real name)
+  soDienThoai: string
+  email: string
+  tenDangNhap: string
+  phongBan?: string
+  chucVu?: string
+}
+
+const ProfilePage = () => {
+  const { user } = useAuth()
+  const [profile, setProfile] = useState<UserProfile>({
+    soDienThoai: '',
+    email: '',
+    tenDangNhap: '',
+    phongBan: '',
+    chucVu: '',
+  })
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [msg, setMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return
+
+      console.log('🔍 Current user object:', user)
+      console.log('🔍 User ID (MaND):', user.id)
+      console.log('🔍 Token in localStorage:', localStorage.getItem('auth_token'))
+
+      // Helper to map ANY case-insensitive logic or PascalCase from API to Custom State
+      const mapResponseToProfile = (data: any) => {
+        if (!data) return
+        console.log('✅ Mapping profile data:', data)
+        setProfile((prev) => ({
+          ...prev,
+          soDienThoai: data.soDienThoai || data.SoDienThoai || data.phoneNumber || prev.soDienThoai,
+          email: data.email || data.Email || prev.email,
+          tenDangNhap: data.tenDangNhap || data.TenDangNhap || data.username || prev.tenDangNhap,
+          phongBan: data.phongBan || data.PhongBan || data.department || prev.phongBan,
+          chucVu: data.chucVu || data.ChucVu || data.position || prev.chucVu,
+        }))
+      }
+
+      // PRIMARY STRATEGY: Use /api/Auth/{id} endpoint with MaND
+      try {
+        const maND = user.id
+        console.log('📡 Calling GET /api/Auth/' + maND)
+        if (maND) {
+          const data = await apiGet<any>(`/api/Auth/${maND}`)
+          console.log('✅ Profile API response:', data)
+          if (data) {
+            mapResponseToProfile(data)
+            return
+          }
+        }
+      } catch (err: any) {
+        console.error('❌ GET /api/Auth/{id} failed:', err)
+        
+        // Check if it's a 401 Unauthorized error
+        if (err?.message?.includes('401')) {
+          setMsg({ 
+            type: 'error', 
+            text: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng xuất và đăng nhập lại.' 
+          })
+          return // Don't try fallback if unauthorized
+        }
+      }
+
+      // Fallback: Try users list endpoint (for admin only)
+      try {
+        console.log('📡 Fallback: Calling GET /api/Auth/users')
+        const data = await apiGet<any>('/api/Auth/users')
+        if (Array.isArray(data)) {
+          const currentUser = data.find((u: any) => 
+            u.maND?.toString() === user.id?.toString() || 
+            u.tenDangNhap === user.username
+          )
+          if (currentUser) {
+            console.log('✅ Found user in users list:', currentUser)
+            mapResponseToProfile(currentUser)
+            return
+          }
+        }
+      } catch (err) { 
+        console.error('❌ GET /users fallback failed:', err)
+      }
+
+      // Context Fallback
+      console.log('⚠️ Using context fallback')
+      setProfile(prev => ({
+        ...prev,
+        email: user.email || prev.email,
+        soDienThoai: user.soDienThoai || prev.soDienThoai,
+        tenDangNhap: user.username || prev.tenDangNhap,
+        phongBan: user.phongBan || prev.phongBan,
+        chucVu: user.chucVu || prev.chucVu,
+      }))
+    }
+    
+    fetchProfile()
+  }, [user])
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setMsg(null)
+
+    if (password && password !== confirmPassword) {
+      setMsg({ type: 'error', text: 'Mật khẩu xác nhận không khớp.' })
+      return
+    }
+
+    try {
+      setLoading(true)
+      const payload: any = {
+        hoTen: profile.tenDangNhap, // Use tenDangNhap as hoTen
+        soDienThoai: profile.soDienThoai,
+        email: profile.email,
+        phongBan: profile.phongBan,
+        chucVu: profile.chucVu,
+      }
+
+      // Call API using the employee endpoint
+      // PUT /api/Auth/nhanvien/{maND}
+      const maND = user?.id
+      if (!maND) {
+        throw new Error('Không tìm thấy mã người dùng')
+      }
+      
+      console.log('📡 Updating profile for MaND:', maND)
+      await apiPut(`/api/Auth/nhanvien/${maND}`, payload)
+      setMsg({ type: 'success', text: 'Cập nhật thông tin thành công!' })
+      setPassword('')
+      setConfirmPassword('')
+    } catch (err) {
+      console.error(err)
+      setMsg({ type: 'error', text: 'Không thể cập nhật hồ sơ. Vui lòng thử lại.' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <MainLayout>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '24px' }}>
+        <h2 style={{ fontSize: '24px', marginBottom: '8px' }}>Hồ sơ cá nhân</h2>
+        <p style={{ color: '#666', marginBottom: '32px' }}>Quản lý thông tin và mật khẩu của bạn</p>
+
+        <div className="card" style={{ padding: '32px' }}>
+          {msg && (
+            <div
+              style={{
+                padding: '12px',
+                borderRadius: '8px',
+                marginBottom: '24px',
+                background: msg.type === 'success' ? '#e6f4ea' : '#fce8e6',
+                color: msg.type === 'success' ? '#1e8e3e' : '#d93025',
+              }}
+            >
+              {msg.text}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="form-grid">
+            <div className="form-field">
+              <label className="form-label">Tên đăng nhập</label>
+              <input className="input" value={profile.tenDangNhap} disabled style={{ background: '#f1f3f4', cursor: 'not-allowed' }} />
+            </div>
+            
+            {/* Removed Ho Ten field as requested */}
+
+            <div className="form-field">
+              <label className="form-label">Email</label>
+              <input
+                className="input"
+                type="email"
+                value={profile.email}
+                onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                placeholder="email@example.com"
+              />
+            </div>
+
+            <div className="form-field">
+              <label className="form-label">Số điện thoại</label>
+              <input
+                className="input"
+                value={profile.soDienThoai}
+                onChange={(e) => setProfile({ ...profile, soDienThoai: e.target.value })}
+                placeholder="0912..."
+              />
+            </div>
+
+            <div className="form-field">
+              <label className="form-label">Phòng ban (Chỉ xem)</label>
+              <input className="input" value={profile.phongBan || ''} disabled style={{ background: '#f1f3f4' }} />
+            </div>
+
+            <div className="form-field">
+              <label className="form-label">Chức vụ (Chỉ xem)</label>
+              <input className="input" value={profile.chucVu || ''} disabled style={{ background: '#f1f3f4' }} />
+            </div>
+
+            <div className="section-divider" style={{ gridColumn: '1 / -1', marginTop: '16px' }}>
+              <span>Đổi mật khẩu</span>
+            </div>
+
+            <div className="form-field">
+              <label className="form-label">Mật khẩu mới</label>
+              <input
+                className="input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Bỏ trống nếu không đổi"
+              />
+            </div>
+
+            <div className="form-field">
+              <label className="form-label">Xác nhận mật khẩu</label>
+              <input
+                className="input"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Nhập lại mật khẩu mới"
+              />
+            </div>
+
+            <div className="form-actions">
+              <button type="submit" className="btn-primary" disabled={loading}>
+                {loading ? 'Đang lưu...' : 'Lưu thay đổi'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </MainLayout>
+  )
+}
+
+export default ProfilePage
