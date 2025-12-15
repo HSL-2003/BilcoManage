@@ -380,7 +380,7 @@ const AdminDashboard = () => {
                       </div>
                       <div className="admin-actions">
                         <button 
-                          className="btn-admin-outline" 
+                          className="btn-admin-danger" 
                           onClick={() => handleApproval(req.maND, 'reject')}
                           disabled={processingIds.has(req.maND)}
                         >
