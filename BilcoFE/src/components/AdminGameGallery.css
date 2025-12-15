@@ -1,10 +1,156 @@
 .admin-gallery-section {
     margin-bottom: 40px;
     position: relative;
-    padding: 0;
-    /* Prevent layout shifting */
+    padding: 20px 0;
     contain: layout paint;
 }
+
+.admin-gallery-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 24px;
+    padding-left: 24px;
+    border-left: 4px solid #38bdf8;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+.admin-gallery-container {
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+    position: relative;
+    perspective: 1500px;
+    /* Strong perspective */
+    /* Enhance edges */
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.admin-gallery-track {
+    display: flex;
+    /* Negative margin creates Z-Stack/Overlap effect */
+    gap: 0;
+    width: max-content;
+    padding: 50px 0;
+    transform-style: preserve-3d;
+
+    /* Animation */
+    animation: zStackScroll 35s linear infinite;
+}
+
+.admin-gallery-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes zStackScroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+        /* Loop half for duplicate content */
+    }
+}
+
+.admin-gallery-item {
+    width: 220px;
+    height: 140px;
+    /* Landscape cards look better stacked */
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+
+    /* Z-STACK MAGIC: Negative Margin overlap */
+    margin-right: -100px;
+
+    /* Decoration */
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(30, 41, 59, 0.8);
+    box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.5);
+    /* Shadow to left/bottom to separate stack */
+
+    /* TILT for Stack look */
+    transform: rotateY(45deg) rotateZ(-5deg) translateZ(0);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    backface-visibility: hidden;
+    /* Sort order? CSS order doesn't change Z-index automatically properly for overlap
+       But standard stacking context usually works left-to-right (right on top).
+       With negative margin right, the NEXT item covers the PREVIOUS.
+       Wait, DOM order: Last is on top.
+       So right details cover left details. That works for "Stack flowing left".
+    */
+}
+
+.admin-gallery-item:hover {
+    /* Pull out of stack */
+    transform: rotateY(0deg) rotateZ(0deg) scale(1.1) translateZ(50px) translateX(0);
+    margin-right: 40px;
+    /* Give it space */
+    margin-left: 40px;
+    z-index: 1000;
+    border-color: #38bdf8;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.3);
+}
+
+.admin-gallery-item:hover~.admin-gallery-item {
+    /* Push neighbors away? CSS can only push siblings AFTER. */
+    transform: translateX(50px) rotateY(45deg) rotateZ(-5deg);
+}
+
+.admin-gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    filter: brightness(0.8) contrast(1.1);
+    transition: all 0.3s;
+}
+
+.admin-gallery-item:hover .admin-gallery-img {
+    filter: brightness(1.1) contrast(1);
+}
+
+.admin-gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.admin-gallery-item:hover .admin-gallery-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Modal same as before */
+.admin-gallery-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s;
+}
+
 
 .admin-gallery-title {
     font-size: 20px;
