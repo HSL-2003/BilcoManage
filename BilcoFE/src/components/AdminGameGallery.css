@@ -1,8 +1,192 @@
 .admin-gallery-section {
     margin-bottom: 40px;
     position: relative;
+    padding: 0;
+    /* Prevent layout shifting */
+    contain: layout paint;
+}
+
+.admin-gallery-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 20px;
+    padding-left: 24px;
+    border-left: 4px solid #38bdf8;
+}
+
+.admin-gallery-container {
+    width: 100%;
+    /* FIXED HEIGHT to prevent jitter on vertical animation */
+    height: 320px;
     overflow: hidden;
-    padding: 20px 0;
+    position: relative;
+    /* 3D Context */
+    perspective: 1000px;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.admin-gallery-track {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    padding: 40px 0;
+
+    /* 3D Diagonal Path Setup */
+    /* "Nối đường thẳng xéo qua tôi" -> Rotate the whole track in 3D */
+    transform-style: preserve-3d;
+    /* Rotate nicely for perspective */
+    transform: rotateX(5deg) rotateY(10deg) rotateZ(3deg);
+
+    animation: diagonalScroll 40s linear infinite;
+}
+
+.admin-gallery-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes diagonalScroll {
+    0% {
+        transform: rotateX(5deg) rotateY(10deg) rotateZ(3deg) translateX(0);
+    }
+
+    100% {
+        /* Move left */
+        transform: rotateX(5deg) rotateY(10deg) rotateZ(3deg) translateX(-50%);
+    }
+}
+
+.admin-gallery-item {
+    /* "Thon như tờ giấy nằm dọc" -> Vertical, high aspect ratio */
+    width: 160px;
+    height: 240px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+
+    /* Glass / Card Style */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.5);
+
+    /* "Nằm dọc like DVD" -> RotateY */
+    transform: rotateY(-30deg) translateZ(0);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Smooth rendering */
+    backface-visibility: hidden;
+}
+
+.admin-gallery-item:hover {
+    /* Zoom and face forward on hover */
+    transform: rotateY(0deg) scale(1.2) translateZ(50px);
+    z-index: 100;
+    border-color: #38bdf8;
+    box-shadow: 0 0 50px rgba(56, 189, 248, 0.4);
+}
+
+.admin-gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.admin-gallery-item:hover .admin-gallery-img {
+    opacity: 1;
+}
+
+.admin-gallery-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: -20px;
+    /* Offset text */
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    transform: rotateY(30deg) translateZ(20px);
+    /* Counter-rotate text ? */
+    opacity: 0;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.admin-gallery-item:hover .admin-gallery-overlay {
+    opacity: 1;
+    left: 10px;
+    bottom: 10px;
+    transform: none;
+}
+
+/* Modal */
+.admin-gallery-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s;
+}
+
+.admin-gallery-modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 50px rgba(56, 189, 248, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.admin-gallery-zoomed-img {
+    max-width: 100%;
+    max-height: 90vh;
+    display: block;
+    border-radius: 12px;
+}
+
+.admin-gallery-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.admin-gallery-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .admin-gallery-title {
