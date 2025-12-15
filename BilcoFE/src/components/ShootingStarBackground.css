@@ -1,0 +1,133 @@
+.star-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    z-index: 0;
+    /* Background layer */
+    overflow: hidden;
+}
+
+.bg-gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.night {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: rotateZ(45deg);
+    /* Diagonal angle for stars */
+    z-index: 0;
+}
+
+/* Shooting Star Styles */
+.shooting_star {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 2px;
+    background: linear-gradient(-45deg, rgba(95, 145, 255, 1), rgba(0, 0, 255, 0));
+    border-radius: 999px;
+    filter: drop-shadow(0 0 6px rgba(105, 155, 255, 1));
+    animation: tail 3000ms ease-in-out infinite, shooting 3000ms ease-in-out infinite;
+}
+
+.shooting_star::before {
+    content: '';
+    position: absolute;
+    top: calc(50% - 1px);
+    right: 0;
+    height: 2px;
+    background: linear-gradient(-45deg, rgba(0, 0, 255, 0), rgba(95, 145, 255, 1), rgba(0, 0, 255, 0));
+    transform: translateX(50%) rotateZ(45deg);
+    border-radius: 100%;
+    animation: shining 3000ms ease-in-out infinite;
+}
+
+.shooting_star::after {
+    /* Head of star */
+    content: '';
+    position: absolute;
+    top: calc(50% - 1px);
+    right: 0;
+    height: 2px;
+    background: linear-gradient(-45deg, rgba(0, 0, 255, 0), rgba(95, 145, 255, 1), rgba(0, 0, 255, 0));
+    transform: translateX(50%) rotateZ(45deg);
+    border-radius: 100%;
+    animation: shining 3000ms ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes tail {
+    0% {
+        width: 0;
+    }
+
+    30% {
+        width: 100px;
+    }
+
+    100% {
+        width: 0;
+    }
+}
+
+@keyframes shooting {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(300px);
+    }
+}
+
+@keyframes shining {
+    0% {
+        width: 0;
+    }
+
+    50% {
+        width: 30px;
+    }
+
+    100% {
+        width: 0;
+    }
+}
+
+/* Static twinkling stars */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 5px white;
+    opacity: 0.5;
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}

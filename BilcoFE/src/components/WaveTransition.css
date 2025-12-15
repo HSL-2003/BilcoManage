@@ -1,0 +1,132 @@
+.wave-transition-container {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 120vh;
+    /* Taller to cover bounces */
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Default state: Depends on animation class */
+}
+
+/* 
+  Mode: Exit (Covering the screen)
+  Start: Bottom (100% translateY of container? No, container is fixed)
+  We animate the translateY of the container itself to slide the waves up.
+*/
+.wave-anim-exit {
+    bottom: -120%;
+    /* Start completely below */
+    animation: slideUp 1s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+/*
+  Mode: Enter (Revealing the screen)
+  Start: Covering the screen (0%)
+  End: Top (-100% or more)
+*/
+.wave-anim-enter {
+    bottom: 0;
+    /* Start at covering position */
+    animation: slideUpAway 1s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+.wave-layer {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.wave-layer svg {
+    width: 100%;
+    height: 40vh;
+    /* Large impressive waves */
+    display: block;
+    margin-bottom: -1px;
+    filter: drop-shadow(0px -5px 10px rgba(0, 0, 0, 0.1));
+    /* Depth */
+}
+
+.wave-bg-fill {
+    width: 100%;
+    height: 100vh;
+    /* The deep water body */
+    background: linear-gradient(to bottom, #2563eb, #1e3a8a);
+}
+
+/* Parallax Sway */
+.wave-back {
+    z-index: 10;
+    bottom: 5px;
+    animation: sway 8s ease-in-out infinite alternate;
+}
+
+.wave-mid {
+    z-index: 20;
+    bottom: 0px;
+    animation: sway 6s ease-in-out infinite alternate-reverse;
+}
+
+.wave-front {
+    z-index: 30;
+    bottom: 0px;
+    animation: sway 5s ease-in-out infinite alternate;
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-110%);
+    }
+
+    /* Move UP to cover */
+}
+
+/* Wait, Container is at bottom: -120% initially. 
+   To cover, we need to move it UP.
+   TranslateY goes negative to move up.
+*/
+@keyframes slideUp {
+    0% {
+        transform: translateY(0);
+    }
+
+    /* At bottom */
+    100% {
+        transform: translateY(-100%);
+    }
+
+    /* Moves up to cover screen */
+}
+
+@keyframes slideUpAway {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    /* Currently covering screen */
+    100% {
+        transform: translateY(-200%);
+    }
+
+    /* Move further up away to header */
+}
+
+@keyframes sway {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-2%);
+    }
+}

@@ -146,7 +146,7 @@ const CompanyHomePage = () => {
           <div className="company-blob blob-2"></div>
           
           <div className="company-hero-inner company-hero-grid">
-            <div>
+            <div className="company-hero-text-box">
               <div className="company-badge">15 năm – Vươn tầm thế giới</div>
               <h1 className="company-title">
                 Bilco – Giải pháp tổng thể cho{' '}

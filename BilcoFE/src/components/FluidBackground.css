@@ -1,0 +1,76 @@
+.fluid-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    background: #f0f7ff;
+    /* Very light blue background */
+}
+
+.fluid-container {
+    filter: blur(80px);
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.fluid-blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: flow 20s infinite ease-in-out;
+    mix-blend-mode: normal;
+    /* Changed from multiply */
+}
+
+.blob-1 {
+    background: #3b82f6;
+    /* Vibrant Blue */
+    width: 700px;
+    height: 700px;
+    left: -100px;
+    top: -100px;
+    animation-delay: 0s;
+}
+
+.blob-2 {
+    background: #0284c7;
+    /* Deep Sky Blue/Teal */
+    width: 600px;
+    height: 600px;
+    right: -100px;
+    top: -150px;
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    background: #7c3aed;
+    /* Vibrant Purple */
+    width: 500px;
+    height: 500px;
+    bottom: -100px;
+    left: 20%;
+    animation-delay: -10s;
+}
+
+/* Animation keyframes */
+@keyframes flow {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, 50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}

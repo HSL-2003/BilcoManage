@@ -1,0 +1,133 @@
+.dive-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* RIPPLE CIRCLE */
+.dive-ripple {
+    position: absolute;
+    width: 100vmax;
+    /* Use vmax to ensure coverage */
+    height: 100vmax;
+    background: radial-gradient(circle, #1e3a8a 0%, #1e40af 50%, #172554 100%);
+    border-radius: 50%;
+    transform: scale(0);
+    /* Start hidden */
+    transform-origin: center;
+}
+
+/* LOGO Center */
+.dive-logo {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    opacity: 0;
+}
+
+.dive-logo-icon {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+}
+
+.dive-logo-text {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-family: 'Inter', sans-serif;
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+/* EXIT (Cover Screen) */
+.dive-exit .dive-ripple {
+    /* Expand smoothly */
+    animation: rippleExpand 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.dive-exit .dive-logo {
+    /* Fade in midway */
+    animation: logoReveal 0.8s ease-out 0.3s forwards;
+}
+
+/* ENTER (Reveal Screen) */
+/* Initially, the screen is FULL covered (from previous Exit). 
+   So we start at scale(1.5) or whatever rippleExpand ended at.
+   Then we FADE OUT the whole overlay to reveal the new page "under water".
+*/
+.dive-enter .dive-ripple {
+    transform: scale(1.5);
+    /* Fully covered state */
+    /* No animation needed on ripple geometry, we fade the container opacity? */
+}
+
+.dive-enter {
+    animation: overlayFadeOut 1s ease-in-out forwards;
+}
+
+.dive-enter .dive-logo {
+    opacity: 1;
+    animation: logoFadeOut 0.8s ease-in 0.1s forwards;
+}
+
+
+/* Keyframes */
+@keyframes rippleExpand {
+    0% {
+        transform: scale(0);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.5);
+        /* Overshoot to cover corners */
+        opacity: 1;
+    }
+}
+
+@keyframes logoReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes overlayFadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes logoFadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+}

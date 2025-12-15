@@ -1,14 +1,23 @@
 import { type FormEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import ShootingStarBackground from '../components/ShootingStarBackground'
+import DeepDiveTransition from '../components/DeepDiveTransition'
 import './auth.css'
 
 const LoginPage = () => {
   const { login } = useAuth()
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  // Transition States
+  const [isTransitioning, setIsTransitioning] = useState(false) // Exit
+  const [showEnterTransition, setShowEnterTransition] = useState(true) // Enter
+
+  const onEnterComplete = () => setShowEnterTransition(false)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -23,9 +32,21 @@ const LoginPage = () => {
     }
   }
 
+  const handleRegisterClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsTransitioning(true);
+    // Wait for Ripple Expand (1s approx)
+    setTimeout(() => {
+        navigate('/register');
+    }, 1100); 
+  }
+
   return (
     <div className="auth-root">
-      <div className="auth-panel">
+       {showEnterTransition && <DeepDiveTransition mode="enter" onComplete={onEnterComplete} />}
+       {isTransitioning && <DeepDiveTransition mode="exit" onComplete={() => {}} />}
+      <ShootingStarBackground />
+      <div className="auth-panel" style={{position: 'relative', zIndex: 1}}>
         <div className="auth-brand">
           <span className="auth-brand-main">Bilco</span>
           <span className="auth-brand-sub">Waterpark Assets</span>
@@ -66,9 +87,9 @@ const LoginPage = () => {
 
         <p className="auth-footer">
           Chưa có tài khoản?{' '}
-          <Link to="/register" className="auth-link">
+          <a href="/register" onClick={handleRegisterClick} className="auth-link">
             Đăng ký
-          </Link>
+          </a>
         </p>
 
         <div className="auth-footer auth-cta-company">
@@ -83,5 +104,3 @@ const LoginPage = () => {
 }
 
 export default LoginPage
-
-
