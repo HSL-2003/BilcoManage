@@ -56,14 +56,14 @@
 }
 
 .admin-gallery-item {
-    width: 220px;
-    height: 140px;
+    width: 280px;
+    height: 180px;
     flex-shrink: 0;
     position: relative;
     cursor: pointer;
 
     /* Z-STACK Magic */
-    margin-right: -100px;
+    margin-right: -130px;
 
     /* Visuals */
     border-radius: 16px;
