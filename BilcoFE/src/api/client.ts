@@ -1,4 +1,4 @@
-const BASE_URL = 'https://localhost:7229'
+const BASE_URL = 'https://bilcobe-2.onrender.com'
 
 export async function apiGet<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, createOptions('GET', undefined, options))
