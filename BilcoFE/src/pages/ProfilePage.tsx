@@ -4,7 +4,7 @@ import { apiGet, apiPut } from '../api/client'
 import { useAuth } from '../context/AuthContext'
 
 type UserProfile = {
-  // Removed hoTen as per user request (username is the real name)
+  hoTen: string
   soDienThoai: string
   email: string
   tenDangNhap: string
@@ -15,6 +15,7 @@ type UserProfile = {
 const ProfilePage = () => {
   const { user } = useAuth()
   const [profile, setProfile] = useState<UserProfile>({
+    hoTen: '',
     soDienThoai: '',
     email: '',
     tenDangNhap: '',
@@ -32,7 +33,6 @@ const ProfilePage = () => {
 
       console.log('🔍 Current user object:', user)
       console.log('🔍 User ID (MaND):', user.id)
-      console.log('🔍 Token in localStorage:', localStorage.getItem('auth_token'))
 
       // Helper to map ANY case-insensitive logic or PascalCase from API to Custom State
       const mapResponseToProfile = (data: any) => {
@@ -40,6 +40,7 @@ const ProfilePage = () => {
         console.log('✅ Mapping profile data:', data)
         setProfile((prev) => ({
           ...prev,
+          hoTen: data.hoTen || data.HoTen || data.fullName || prev.hoTen || data.tenDangNhap,
           soDienThoai: data.soDienThoai || data.SoDienThoai || data.phoneNumber || prev.soDienThoai,
           email: data.email || data.Email || prev.email,
           tenDangNhap: data.tenDangNhap || data.TenDangNhap || data.username || prev.tenDangNhap,
@@ -96,6 +97,7 @@ const ProfilePage = () => {
       console.log('⚠️ Using context fallback')
       setProfile(prev => ({
         ...prev,
+        hoTen: user.hoTen || user.username || prev.hoTen,
         email: user.email || prev.email,
         soDienThoai: user.soDienThoai || prev.soDienThoai,
         tenDangNhap: user.username || prev.tenDangNhap,
@@ -118,17 +120,22 @@ const ProfilePage = () => {
 
     try {
       setLoading(true)
+      
+      // Construct Payload based on Swagger: { hoTen, soDienThoai, email, matKhau }
       const payload: any = {
-        hoTen: profile.tenDangNhap, // Use tenDangNhap as hoTen
+        hoTen: profile.hoTen, // Send current hoTen (even if hidden from UI)
         soDienThoai: profile.soDienThoai,
         email: profile.email,
-        phongBan: profile.phongBan,
-        chucVu: profile.chucVu,
+      }
+      
+      // Only include matKhau if user entered a new one
+      if (password) {
+        payload.matKhau = password
       }
 
       // Call API using the profile endpoint
       // PUT /api/Auth/profile
-      console.log('📡 Updating profile...')
+      console.log('📡 Updating profile Payload:', payload)
       await apiPut('/api/Auth/profile', payload)
       setMsg({ type: 'success', text: 'Cập nhật thông tin thành công!' })
       setPassword('')
