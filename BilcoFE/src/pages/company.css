@@ -280,6 +280,7 @@ body {
   background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
   -webkit-background-clip: text;
   background-clip: text;
+  color: transparent;
   -webkit-text-fill-color: transparent;
 }
 
@@ -390,6 +391,7 @@ body {
   background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
   -webkit-background-clip: text;
   background-clip: text;
+  color: transparent;
   -webkit-text-fill-color: transparent;
 }
 
@@ -751,6 +753,8 @@ body {
   margin-bottom: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
+  /* Standard property */
   -webkit-box-orient: vertical;
   overflow: hidden;
   opacity: 0.9;
