@@ -638,8 +638,8 @@ const AdminDashboard = () => {
 
       {/* APPROVAL MODAL */}
       {isApproveModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content" style={{ width: '500px', maxWidth: '90%' }}>
+        <div className="admin-modal-overlay">
+          <div className="admin-modal" style={{ width: '500px', maxWidth: '90%' }}>
             <h3>Duyệt tài khoản: {selectedUserForApproval?.tenDangNhap}</h3>
             <p style={{marginBottom: '16px', color: '#666'}}>Vui lòng điền thông tin để kích hoạt tài khoản này.</p>
             
@@ -733,8 +733,8 @@ const AdminDashboard = () => {
 
       {/* Edit User Modal */}
       {isEditModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content" style={{ width: '500px', maxWidth: '90%' }}>
+        <div className="admin-modal-overlay">
+          <div className="admin-modal" style={{ width: '500px', maxWidth: '90%' }}>
             <h3>Chỉnh sửa thông tin: {selectedUserForEdit?.tenDangNhap}</h3>
             <p style={{marginBottom: '16px', color: '#666'}}>Cập nhật thông tin nhân viên</p>
             
