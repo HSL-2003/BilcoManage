@@ -126,15 +126,10 @@ const ProfilePage = () => {
         chucVu: profile.chucVu,
       }
 
-      // Call API using the employee endpoint
-      // PUT /api/Auth/nhanvien/{maND}
-      const maND = user?.id
-      if (!maND) {
-        throw new Error('Không tìm thấy mã người dùng')
-      }
-      
-      console.log('📡 Updating profile for MaND:', maND)
-      await apiPut(`/api/Auth/nhanvien/${maND}`, payload)
+      // Call API using the profile endpoint
+      // PUT /api/Auth/profile
+      console.log('📡 Updating profile...')
+      await apiPut('/api/Auth/profile', payload)
       setMsg({ type: 'success', text: 'Cập nhật thông tin thành công!' })
       setPassword('')
       setConfirmPassword('')
@@ -149,18 +144,19 @@ const ProfilePage = () => {
   return (
     <MainLayout>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '24px' }}>
-        <h2 style={{ fontSize: '24px', marginBottom: '8px' }}>Hồ sơ cá nhân</h2>
-        <p style={{ color: '#666', marginBottom: '32px' }}>Quản lý thông tin và mật khẩu của bạn</p>
+        <h2 style={{ fontSize: '24px', marginBottom: '8px', color: '#fff' }}>Hồ sơ cá nhân</h2>
+        <p style={{ color: '#94a3b8', marginBottom: '32px' }}>Quản lý thông tin và mật khẩu của bạn</p>
 
-        <div className="card" style={{ padding: '32px' }}>
+        <div className="card" style={{ padding: '32px', background: 'rgba(30, 41, 59, 0.6)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           {msg && (
             <div
               style={{
                 padding: '12px',
                 borderRadius: '8px',
                 marginBottom: '24px',
-                background: msg.type === 'success' ? '#e6f4ea' : '#fce8e6',
-                color: msg.type === 'success' ? '#1e8e3e' : '#d93025',
+                background: msg.type === 'success' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                color: msg.type === 'success' ? '#34d399' : '#f87171',
+                border: msg.type === 'success' ? '1px solid #059669' : '1px solid #dc2626'
               }}
             >
               {msg.text}
@@ -169,41 +165,43 @@ const ProfilePage = () => {
 
           <form onSubmit={handleSubmit} className="form-grid">
             <div className="form-field">
-              <label className="form-label">Tên đăng nhập</label>
-              <input className="input" value={profile.tenDangNhap} disabled style={{ background: '#f1f3f4', cursor: 'not-allowed' }} />
+              <label className="form-label" style={{color: '#cbd5e1'}}>Tên đăng nhập</label>
+              <input className="input" value={profile.tenDangNhap} disabled style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8', cursor: 'not-allowed' }} />
             </div>
             
             {/* Removed Ho Ten field as requested */}
 
             <div className="form-field">
-              <label className="form-label">Email</label>
+              <label className="form-label" style={{color: '#cbd5e1'}}>Email</label>
               <input
                 className="input"
                 type="email"
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                 placeholder="email@example.com"
+                style={{background: 'rgba(15, 23, 42, 0.6)', color: '#fff', borderColor: 'rgba(255,255,255,0.1)'}}
               />
             </div>
 
             <div className="form-field">
-              <label className="form-label">Số điện thoại</label>
+              <label className="form-label" style={{color: '#cbd5e1'}}>Số điện thoại</label>
               <input
                 className="input"
                 value={profile.soDienThoai}
                 onChange={(e) => setProfile({ ...profile, soDienThoai: e.target.value })}
                 placeholder="0912..."
+                style={{background: 'rgba(15, 23, 42, 0.6)', color: '#fff', borderColor: 'rgba(255,255,255,0.1)'}}
               />
             </div>
 
             <div className="form-field">
-              <label className="form-label">Phòng ban (Chỉ xem)</label>
-              <input className="input" value={profile.phongBan || ''} disabled style={{ background: '#f1f3f4' }} />
+              <label className="form-label" style={{color: '#cbd5e1'}}>Phòng ban (Chỉ xem)</label>
+              <input className="input" value={profile.phongBan || ''} disabled style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }} />
             </div>
 
             <div className="form-field">
-              <label className="form-label">Chức vụ (Chỉ xem)</label>
-              <input className="input" value={profile.chucVu || ''} disabled style={{ background: '#f1f3f4' }} />
+              <label className="form-label" style={{color: '#cbd5e1'}}>Chức vụ (Chỉ xem)</label>
+              <input className="input" value={profile.chucVu || ''} disabled style={{ background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }} />
             </div>
 
             <div className="section-divider" style={{ gridColumn: '1 / -1', marginTop: '16px' }}>

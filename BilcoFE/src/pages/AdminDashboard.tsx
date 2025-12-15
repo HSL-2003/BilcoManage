@@ -151,12 +151,14 @@ const AdminDashboard = () => {
        return
     }
 
-    // REJECT FLOW (unchanged)
+    // REJECT FLOW -> DELETE the pending user
     try {
       setProcessingIds((prev) => new Set(prev).add(maND))
-      await apiPut(`/api/Auth/${maND}/reject`, {})
+      console.log('Using DELETE /api/Auth/' + maND + ' for rejection/deletion')
+      await apiDelete(`/api/Auth/${maND}`)
       setPendingApprovals((prev) => prev.filter((user) => user.maND !== maND))
       fetchAllUsers()
+      alert('Đã từ chối và xóa yêu cầu đăng ký.')
     } catch (err) {
       console.error(err)
       alert(`Thao tác thất bại. Vui lòng thử lại.`)
