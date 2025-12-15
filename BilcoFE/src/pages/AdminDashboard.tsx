@@ -180,9 +180,11 @@ const AdminDashboard = () => {
         const payload = {
            ...approvalForm,
            maQuyen: Number(approvalForm.maQuyen),
+           maNV: selectedUserForApproval.maNV || 0, // Ensure maNV is sent
            trangThai: true,
            isActive: true
         }
+        console.log('Validating Approve Payload:', payload)
         await apiPut(`/api/Auth/${selectedUserForApproval.maND}/approve`, payload)
         
         // Success cleanup
