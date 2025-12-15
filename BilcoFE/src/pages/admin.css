@@ -528,3 +528,81 @@ body {
     background: rgba(148, 163, 184, 0.1);
     color: #94a3b8;
 }
+
+/* NEW: Admin Menu & Dropdown Fixes */
+
+/* 1. Header Navigation Pills */
+.admin-menu-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(30, 41, 59, 0.4);
+    padding: 6px;
+    border-radius: 99px;
+    /* Pill shape container */
+    border: 1px solid var(--admin-border);
+    backdrop-filter: blur(8px);
+}
+
+.admin-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 99px;
+    text-decoration: none;
+    color: var(--admin-text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-menu-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.admin-menu-item:active {
+    transform: translateY(0);
+}
+
+/* 2. Dropdown Override for Dark Theme (MainLayout) */
+/* Requires !important or specific selector specificity because MainLayout uses ID or general class */
+.layout-user-dropdown {
+    background: #1e293b !important;
+    /* Dark Slate */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+
+.layout-user-dropdown-item {
+    color: #cbd5e1 !important;
+    /* Light Grey Text */
+}
+
+.layout-user-dropdown-item:hover {
+    background-color: rgba(56, 189, 248, 0.1) !important;
+    /* Light Blue Hover */
+    color: #fff !important;
+}
+
+/* Fix "Logged in as..." text in dropdown */
+.layout-user-dropdown>div:first-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.layout-user-dropdown>div:first-child>div:first-child {
+    color: #fff !important;
+    /* Username */
+}
+
+.layout-user-dropdown>div:first-child>div:nth-child(2) {
+    color: #94a3b8 !important;
+    /* Role */
+}
