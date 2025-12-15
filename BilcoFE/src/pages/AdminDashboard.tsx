@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useState } from 'react'
 import MainLayout from '../layouts/MainLayout'
 import { apiGet, apiPost, apiPut, apiDelete } from '../api/client'
 import './admin.css' // Import custom admin styles
+import AdminGameGallery from '../components/AdminGameGallery'
 
 type PendingUser = {
   maND: number
@@ -290,7 +291,7 @@ const AdminDashboard = () => {
 
   return (
     <MainLayout>
-      <div className="admin-root">
+      <div className="admin-container">
         <header className="admin-header">
           <div>
             <h1 className="admin-title">Trung tâm quản trị</h1>
@@ -316,6 +317,8 @@ const AdminDashboard = () => {
             </button>
           </nav>
         </header>
+
+        <AdminGameGallery />
 
         {/* Stats Row */}
         <div className="admin-stats-grid animate-up">
