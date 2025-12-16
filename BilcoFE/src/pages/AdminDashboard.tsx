@@ -29,6 +29,7 @@ type User = {
   trangThai: boolean
   isActive: boolean
   lastLogin: string | null
+  maNV?: number | null // Added maNV property
 }
 
 // Demo Data for other tables
@@ -218,6 +219,12 @@ const AdminDashboard = () => {
     e.preventDefault()
     if (!selectedUserForEdit) return
 
+    console.log('📝 Updating User:', selectedUserForEdit)
+    
+    // Choose ID for endpoint: Try maNV first, fallback to maND (though endpoint says maNV)
+    const updateId = selectedUserForEdit.maNV || selectedUserForEdit.maND
+    console.log('🔗 Update ID being used:', updateId)
+
     try {
       const payload = {
         hoTen: editForm.hoTen,
@@ -227,7 +234,8 @@ const AdminDashboard = () => {
         chucVu: editForm.chucVu
       }
       
-      await apiPut(`/api/Auth/nhanvien/${selectedUserForEdit.maND}`, payload)
+      // Using maNV as per Swagger, but might be maND if user has no maNV
+      await apiPut(`/api/Auth/nhanvien/${updateId}`, payload)
       
       // Success
       alert('Cập nhật thông tin thành công!')
@@ -235,7 +243,7 @@ const AdminDashboard = () => {
       setSelectedUserForEdit(null)
       fetchAllUsers()
     } catch (err) {
-      alert('Cập nhật thất bại. Vui lòng kiểm tra dữ liệu.')
+      alert('Cập nhật thất bại. Vui lòng kiểm tra dữ liệu và xem console.')
       console.error(err)
     }
   }
@@ -251,6 +259,10 @@ const AdminDashboard = () => {
 
     try {
       setIsDeleting(true)
+      // Log ID being deleted
+      console.log('🗑️ Deleting User ID (maND):', selectedUserForDelete.maND)
+      console.log('🗑️ User Info:', selectedUserForDelete)
+      
       await apiDelete(`/api/Auth/${selectedUserForDelete.maND}`)
       
       // Success
