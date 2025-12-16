@@ -29,7 +29,8 @@ type User = {
   trangThai: boolean
   isActive: boolean
   lastLogin: string | null
-  maNV?: number | null // Added maNV property
+  maNV?: number | null
+  hoTen?: string // Added hoTen
 }
 
 // Demo Data for other tables
@@ -206,7 +207,7 @@ const AdminDashboard = () => {
   const openEditModal = (user: User) => {
     setSelectedUserForEdit(user)
     setEditForm({
-      hoTen: user.tenDangNhap || '',
+      hoTen: user.hoTen || user.tenDangNhap || '', // Prioritize hoTen
       email: user.email || '',
       soDienThoai: user.soDienThoai || '',
       phongBan: user.phongBan || '',
