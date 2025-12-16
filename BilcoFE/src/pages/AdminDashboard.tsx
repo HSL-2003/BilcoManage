@@ -241,7 +241,8 @@ const AdminDashboard = () => {
       alert('Cập nhật thông tin thành công!')
       setIsEditModalOpen(false)
       setSelectedUserForEdit(null)
-      fetchAllUsers()
+      // Force refresh data - Await it!
+      await fetchAllUsers()
     } catch (err) {
       alert('Cập nhật thất bại. Vui lòng kiểm tra dữ liệu và xem console.')
       console.error(err)
@@ -822,16 +823,16 @@ const AdminDashboard = () => {
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && selectedUserForDelete && (
-        <div className="modal-overlay" onClick={() => setIsDeleteModalOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{maxWidth: '500px'}}>
-            <div className="modal-header" style={{borderBottom: '1px solid #e5e7eb', paddingBottom: '16px'}}>
+        <div className="admin-modal-overlay" onClick={() => setIsDeleteModalOpen(false)}>
+          <div className="admin-modal" onClick={(e) => e.stopPropagation()} style={{maxWidth: '500px'}}>
+            <div className="admin-card-header" style={{borderBottom: '1px solid #e5e7eb', paddingBottom: '16px'}}>
               <h2 style={{margin: 0, fontSize: '20px', fontWeight: 600, color: '#dc3545'}}>
                 ⚠️ Xác nhận xóa tài khoản
               </h2>
               <button 
-                className="modal-close"
+                className="btn-admin-outline"
                 onClick={() => setIsDeleteModalOpen(false)}
-                style={{background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#666'}}
+                style={{background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#666', padding: '0 8px'}}
               >
                 ×
               </button>
