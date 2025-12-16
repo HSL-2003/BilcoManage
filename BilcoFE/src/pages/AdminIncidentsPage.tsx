@@ -101,6 +101,23 @@ const AdminIncidentsPage = () => {
     e.preventDefault()
     setSubmitting(true)
     
+    // Validation
+    if (!formData.maThietBi || Number(formData.maThietBi) <= 0) {
+        alert('Vui lòng nhập Mã Thiết Bị hợp lệ (phải tồn tại trong hệ thống)!')
+        setSubmitting(false)
+        return
+    }
+
+    // Determine Reporter ID
+    const reporterId = user?.maNV ? Number(user.maNV) : (user?.id ? Number(user.id) : 0)
+    console.log('👤 Reporter ID (maNV/maND):', reporterId)
+
+    if (reporterId <= 0) {
+        alert('Không thể xác định Mã Nhân Viên của bạn. Vui lòng cập nhật hồ sơ hoặc liên hệ Admin.')
+        setSubmitting(false)
+        return
+    }
+
     try {
       const payload = {
         maThietBi: formData.maThietBi,
@@ -108,11 +125,13 @@ const AdminIncidentsPage = () => {
         moTa: formData.moTa,
         mucDo: formData.mucDo,
         thoiGianPhatHien: new Date(formData.thoiGianPhatHien!).toISOString(),
-        nguoiBaoCao: user?.id ? Number(user.id) : 0, // Use current user ID
+        nguoiBaoCao: reporterId, 
         trangThai: formData.trangThai,
         giaiPhap: formData.giaiPhap || '',
         ngayXuLy: formData.ngayXuLy ? new Date(formData.ngayXuLy).toISOString() : null
       }
+
+      console.log('📝 Creating Incident Payload:', payload)
 
       if (editingId) {
           // PUT
@@ -129,7 +148,7 @@ const AdminIncidentsPage = () => {
       fetchIncidents()
     } catch (err) {
       console.error(err)
-      alert(`Thao tác thất bại: ${err}`)
+      alert(`Thao tác thất bại. Lỗi Server (500) thường do Mã Thiết Bị không tồn tại hoặc dữ liệu sai. Check Console!`)
     } finally {
       setSubmitting(false)
     }
