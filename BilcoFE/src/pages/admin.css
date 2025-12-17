@@ -1,16 +1,18 @@
-/* Professional Dark Admin Theme */
+/* Minimalist Dark Admin Theme (2-3 Colors) */
 :root {
-    --admin-bg: #0f172a;
-    --admin-glass: rgba(15, 23, 42, 0.6);
-    --admin-glass-hover: rgba(15, 23, 42, 0.8);
-    --admin-border: rgba(255, 255, 255, 0.1);
-    --admin-text: #f8fafc;
+    /* 1. Backgrounds (Dark) */
+    --admin-bg: #0b1120;
+    --admin-surface: #1e293b;
+
+    /* 2. Text (Light) */
+    --admin-text: #e2e8f0;
     --admin-text-muted: #94a3b8;
-    --admin-primary: #38bdf8;
-    --admin-accent: #818cf8;
-    --admin-danger: #ef4444;
-    --admin-success: #10b981;
-    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+    /* 3. Primary/Highlight (Blue) */
+    --admin-primary: #3b82f6;
+
+    /* Functional Overrides (Keep minimal) */
+    --admin-border: rgba(255, 255, 255, 0.08);
 }
 
 body {
@@ -23,9 +25,8 @@ body {
 .admin-container {
     min-height: 100vh;
     padding: 24px;
-    background: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.05) 0%, transparent 40%);
-    /* Removed contain to fix Fixed Modal context */
+    /* Plain dark background, no gradient noise */
+    background: var(--admin-bg);
 }
 
 .admin-header {
@@ -39,12 +40,9 @@ body {
 
 .admin-title {
     font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    color: var(--admin-text);
+    /* Solid color, no gradient */
     letter-spacing: -0.5px;
 }
 
@@ -55,14 +53,13 @@ body {
 }
 
 /* Glass Cards */
+/* Clean Cards - No blur/noise */
 .admin-card {
-    background: rgba(30, 41, 59, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--admin-surface);
     border: 1px solid var(--admin-border);
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 24px;
-    box-shadow: var(--shadow-glass);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     margin-bottom: 24px;
     /* FIX: Ensure content is clickable */
     position: relative;
@@ -94,13 +91,11 @@ body {
 }
 
 .stat-card {
-    background: rgba(30, 41, 59, 0.4);
-    backdrop-filter: blur(12px);
+    background: var(--admin-surface);
     border: 1px solid var(--admin-border);
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 24px;
-    box-shadow: var(--shadow-glass);
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .stat-card:hover {
@@ -112,9 +107,9 @@ body {
     display: block;
     font-size: 32px;
     font-weight: 700;
-    color: #38bdf8;
+    color: var(--admin-text);
+    /* Unified text color */
     margin-bottom: 4px;
-    text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
 }
 
 .stat-lbl {
@@ -189,18 +184,17 @@ body {
     border-bottom: none;
 }
 
-/* BUTTONS - NEON STYLE */
+/* BUTTONS - FLAT STYLE */
 .btn-admin-primary {
-    background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
-    color: white;
+    background: var(--admin-primary);
+    color: #fff;
     padding: 10px 24px;
-    border-radius: 8px;
+    border-radius: 6px;
     border: none;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     position: relative;
@@ -289,11 +283,12 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--admin-surface);
     padding: 6px;
-    border-radius: 99px;
+    border-radius: 8px;
+    /* Less rounded */
     border: 1px solid var(--admin-border);
-    backdrop-filter: blur(8px);
+    /* removed blur */
     /* Allow horizontal scroll if needed */
     max-width: 100%;
     overflow-x: auto;
@@ -309,7 +304,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    border-radius: 99px;
+    border-radius: 6px;
     text-decoration: none;
     color: var(--admin-text-muted);
     font-size: 14px;
