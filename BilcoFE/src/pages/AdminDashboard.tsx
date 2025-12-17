@@ -309,47 +309,60 @@ const AdminDashboard = () => {
 
   return (
     <MainLayout>
-      <div className="admin-container">
-        <header className="admin-header">
-          <div>
-            <h1 className="admin-title">Trung tâm quản trị</h1>
-            <p className="admin-subtitle">Quản lý người dùng, phân quyền và duyệt đăng ký mới.</p>
-          </div>
-          <nav className="admin-menu-bar">
-            <a href="/admin/incidents" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>⚠️</span> Quản lý sự cố
-            </a>
-            <a href="/admin/equipment" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>🛠️</span> Thiết bị
-            </a>
-            <a href="/admin/materials" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>🔩</span> Vật tư
-            </a>
-            <a href="/admin/material-types" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>🏷️</span> Loại VT
-            </a>
-            <a href="/admin/units" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>⚖️</span> Đơn Vị Tính
-            </a>
-            <a href="/admin/suppliers" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>🤝</span> Nhà cung cấp
-            </a>
-            <a href="/admin/inventory" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>📦</span> Tồn kho
-            </a>
-            <a href="/admin/warehouses" className="admin-menu-item">
-               <span style={{fontSize: '16px'}}>🏭</span> Kho bãi
-            </a>
-            <div style={{width: '1px', height: '20px', background: '#ccc', margin: '0 8px'}} />
-            <button 
-                className="btn-admin-primary" 
-                style={{borderRadius: '99px', padding: '8px 20px'}}
-                onClick={() => document.getElementById('create-user-section')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-                + Tài khoản mới
-            </button>
-          </nav>
-        </header>
+      <div className="admin-layout">
+        <aside className="admin-sidebar">
+           <div className="admin-sidebar-header">
+              <div style={{fontSize: '20px', fontWeight: 'bold', color: '#fff'}}>Bilco</div>
+              <div style={{fontSize: '12px', color: '#686a6e'}}>Waterpark Assets</div>
+           </div>
+
+           <nav className="admin-sidebar-nav">
+              <div className="nav-group-label">QUẢN LÝ TÀI SẢN</div>
+              <a href="/admin/equipment" className="nav-item">
+                  <span>🎡</span> Trò chơi / Thiết bị
+              </a>
+
+              <div className="nav-group-label">QUẢN LÝ KHO</div>
+              <a href="/admin/inventory" className="nav-item">
+                  <span>📦</span> Tổng quan tồn kho
+              </a>
+              <a href="/admin/materials" className="nav-item">
+                  <span>🔩</span> Danh mục vật tư
+              </a>
+              <a href="/admin/material-types" className="nav-item">
+                  <span>🏷️</span> Loại vật tư
+              </a>
+              <a href="/admin/units" className="nav-item">
+                  <span>⚖️</span> Đơn vị tính
+              </a>
+              <a href="/admin/warehouses" className="nav-item">
+                  <span>🏭</span> Kho bãi
+              </a>
+              <a href="/admin/suppliers" className="nav-item">
+                  <span>🤝</span> Nhà cung cấp
+              </a>
+
+              <div className="nav-group-label">BẢO TRÌ & SỰ CỐ</div>
+              <a href="/admin/incidents" className="nav-item">
+                  <span>⚠️</span> Quản lý sự cố
+              </a>
+
+               <div className="nav-group-label">HỆ THỐNG</div>
+                 <button 
+                  className="nav-item" 
+                  style={{background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left'}}
+                  onClick={() => document.getElementById('create-user-section')?.scrollIntoView({ behavior: 'smooth' })}
+                 >
+                  <span>👤</span> Cấp tài khoản
+              </button>
+           </nav>
+        </aside>
+
+        <main className="admin-content">
+          <header className="admin-header-simple">
+               <h1 className="admin-title">Trung tâm quản trị</h1>
+               <p className="admin-subtitle">Quản lý toàn bộ hệ thống Bilco Waterpark</p>
+          </header>
 
         <AdminGameGallery />
 
@@ -663,6 +676,8 @@ const AdminDashboard = () => {
             </table>
           </div>
         </div>
+      </main>
+
       </div>
 
       {/* APPROVAL MODAL */}
