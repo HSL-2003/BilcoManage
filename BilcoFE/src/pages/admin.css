@@ -294,6 +294,14 @@ body {
     border-radius: 99px;
     border: 1px solid var(--admin-border);
     backdrop-filter: blur(8px);
+    /* Allow horizontal scroll if needed */
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.admin-menu-bar::-webkit-scrollbar {
+    display: none;
 }
 
 .admin-menu-item {
@@ -309,6 +317,9 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    /* Prevent wrapping and shrinking */
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .admin-menu-item:hover {
