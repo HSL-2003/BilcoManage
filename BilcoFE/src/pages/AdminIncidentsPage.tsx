@@ -11,7 +11,7 @@ type Incident = {
   moTa: string
   mucDo: 'Nghiêm trọng' | 'Trung bình' | 'Nhẹ'
   thoiGianPhatHien: string
-  nguoiBaoCao: number
+  nguoiDungID: number
   trangThai: 'Đã xử lý' | 'Chưa xử lý' | 'Đang xử lý'
   giaiPhap: string
   ngayXuLy: string | null
@@ -108,8 +108,20 @@ const AdminIncidentsPage = () => {
         return
     }
 
+    if (formData.trangThai === 'Đã xử lý' && !formData.ngayXuLy) {
+        alert('Vui lòng nhập Thời gian hoàn thành khi trạng thái là Đã xử lý!')
+        setSubmitting(false)
+        return
+    }
+
     // Determine Reporter ID
     const reporterId = user?.maNV ? Number(user.maNV) : (user?.id ? Number(user.id) : 0);
+    
+    if (reporterId <= 0) {
+        alert('Không tìm thấy thông tin nhân viên (MaNV/ID). Vui lòng đăng xuất và đăng nhập lại!')
+        setSubmitting(false)
+        return
+    }
 
     try {
       const payload = {
@@ -118,7 +130,7 @@ const AdminIncidentsPage = () => {
         moTa: formData.moTa || '',
         mucDo: formData.mucDo,
         thoiGianPhatHien: formData.thoiGianPhatHien ? new Date(formData.thoiGianPhatHien).toISOString() : new Date().toISOString(),
-        nguoiBaoCao: reporterId > 0 ? reporterId : null,
+        nguoiDungID: reporterId,
         trangThai: formData.trangThai,
         giaiPhap: formData.giaiPhap || 'Chưa có',
         ngayXuLy: formData.ngayXuLy ? new Date(formData.ngayXuLy).toISOString() : null,
@@ -251,7 +263,7 @@ const AdminIncidentsPage = () => {
                                         {inc.mucDo}
                                     </span>
                                 </td>
-                                <td>NV-{inc.nguoiBaoCao}</td>
+                                <td>ID: {inc.nguoiDungID}</td>
                                 <td>
                                     <div>{new Date(inc.thoiGianPhatHien).toLocaleDateString('vi-VN')}</div>
                                     <div style={{fontSize: '11px', color: '#888'}}>{new Date(inc.thoiGianPhatHien).toLocaleTimeString('vi-VN')}</div>
