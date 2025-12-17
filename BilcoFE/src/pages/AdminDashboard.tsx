@@ -322,6 +322,9 @@ const AdminDashboard = () => {
             <a href="/admin/equipment" className="admin-menu-item">
                <span style={{fontSize: '16px'}}>🛠️</span> Thiết bị
             </a>
+            <a href="/admin/materials" className="admin-menu-item">
+               <span style={{fontSize: '16px'}}>🔩</span> Vật tư
+            </a>
             <a href="/admin/inventory" className="admin-menu-item">
                <span style={{fontSize: '16px'}}>📦</span> Tồn kho
             </a>
