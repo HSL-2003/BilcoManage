@@ -845,8 +845,8 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: 40px;
 }
 
 .footer-brand h3 {
@@ -872,6 +872,39 @@ body {
   gap: 16px;
   margin-bottom: 16px;
   color: #cbd5e1;
+}
+
+.footer-social h4 {
+  color: #fff;
+  margin-bottom: 24px;
+  font-size: 18px;
+}
+
+.social-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 15px;
+  transition: all 0.3s;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+.social-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transform: translateX(5px);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .footer-copy {

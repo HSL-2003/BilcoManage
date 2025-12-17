@@ -557,7 +557,7 @@ const CompanyHomePage = () => {
                Các dịch vụ của BILCO được dựa trên hơn 15 năm kinh nghiệm giúp đỡ khách hàng và đối tác trong kinh doanh và quản lý doanh nghiệp.
              </p>
           </div>
-          <div className="footer-contact">
+     <div className="footer-contact">
              <h4>Liên hệ</h4>
              <div className="footer-item">
                <span className="footer-icon">📍</span>
@@ -571,6 +571,23 @@ const CompanyHomePage = () => {
                <span className="footer-icon">✉️</span>
                <span>info@bilco.com.vn</span>
              </div>
+          </div>
+          <div className="footer-social">
+            <h4>Kết nối mạng xã hội</h4>
+            <div className="social-links-list">
+              <a href="https://www.facebook.com/hoang.son.lam.446973/" target="_blank" rel="noopener noreferrer" className="social-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="FB" width="24" height="24"/>
+                <span>Facebook</span>
+              </a>
+              <a href="https://www.instagram.com/hslaaam/" target="_blank" rel="noopener noreferrer" className="social-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="IG" width="24" height="24"/>
+                <span>Instagram</span>
+              </a>
+              <a href="https://zalo.me" target="_blank" rel="noopener noreferrer" className="social-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Zalo_logo_2024.svg/1024px-Zalo_logo_2024.svg.png" alt="Zalo" width="24" height="24" style={{borderRadius: '4px'}}/>
+                <span>Zalo</span>
+              </a>
+            </div>
           </div>
         </div>
         <p className="footer-copy">© {new Date().getFullYear()} Bilco. All rights reserved.</p>
