@@ -12,6 +12,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const { user, logout } = useAuth()
   const isAdmin = user?.role === 'admin'
   const [showDropdown, setShowDropdown] = useState(false)
+  const [activeGroup, setActiveGroup] = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -43,30 +44,101 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           )}
 
           {isAdmin && (
-            <>
-              <p className="layout-nav-section">Nghiệp vụ</p>
-              <NavLink to="/plays" className="layout-nav-item">
-                Trò chơi / Hạng mục
-              </NavLink>
-              <NavLink to="/admin/inventory" className="layout-nav-item">
-                Quản lý tồn kho
-              </NavLink>
-              <NavLink to="/maintenance" className="layout-nav-item">
-                Bảo trì & Kiểm tra
-              </NavLink>
-              <NavLink to="/reports" className="layout-nav-item">
-                Báo cáo
-              </NavLink>
-            </>
-          )}
+            <div className="layout-nav-groups">
+              {/* GROUP: QUẢN LÝ TÀI SẢN */}
+              <div className="nav-group">
+                <div 
+                  className="nav-group-header" 
+                  onClick={() => setActiveGroup(prev => prev === 'ASSETS' ? '' : 'ASSETS')}
+                >
+                  <span className="nav-group-title">QUẢN LÝ TÀI SẢN</span>
+                  <span className="nav-group-arrow">{activeGroup === 'ASSETS' ? '▼' : '▶'}</span>
+                </div>
+                {activeGroup === 'ASSETS' && (
+                  <div className="nav-group-items">
+                    <NavLink to="/admin/equipment" className="layout-nav-item sub-item">
+                       🎡 Trò chơi / Thiết bị
+                    </NavLink>
+                  </div>
+                )}
+              </div>
 
-          {isAdmin && (
-            <>
-              <p className="layout-nav-section">Quản trị</p>
-              <NavLink to="/admin" className="layout-nav-item">
-                Admin dashboard
-              </NavLink>
-            </>
+              {/* GROUP: QUẢN LÝ KHO */}
+               <div className="nav-group">
+                <div 
+                  className="nav-group-header" 
+                  onClick={() => setActiveGroup(prev => prev === 'INVENTORY' ? '' : 'INVENTORY')}
+                >
+                  <span className="nav-group-title">QUẢN LÝ KHO</span>
+                  <span className="nav-group-arrow">{activeGroup === 'INVENTORY' ? '▼' : '▶'}</span>
+                </div>
+                {activeGroup === 'INVENTORY' && (
+                  <div className="nav-group-items">
+                    <NavLink to="/admin/inventory" className="layout-nav-item sub-item">
+                       📦 Tổng quan tồn kho
+                    </NavLink>
+                    <NavLink to="/admin/materials" className="layout-nav-item sub-item">
+                       🔩 Danh mục vật tư
+                    </NavLink>
+                     <NavLink to="/admin/material-types" className="layout-nav-item sub-item">
+                       🏷️ Loại vật tư
+                    </NavLink>
+                    <NavLink to="/admin/units" className="layout-nav-item sub-item">
+                       ⚖️ Đơn vị tính
+                    </NavLink>
+                    <NavLink to="/admin/warehouses" className="layout-nav-item sub-item">
+                       🏭 Kho bãi
+                    </NavLink>
+                    <NavLink to="/admin/suppliers" className="layout-nav-item sub-item">
+                       🤝 Nhà cung cấp
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+
+              {/* GROUP: BẢO TRÌ & SỰ CỐ */}
+               <div className="nav-group">
+                <div 
+                  className="nav-group-header" 
+                  onClick={() => setActiveGroup(prev => prev === 'MAINTENANCE' ? '' : 'MAINTENANCE')}
+                >
+                  <span className="nav-group-title">BẢO TRÌ & SỰ CỐ</span>
+                  <span className="nav-group-arrow">{activeGroup === 'MAINTENANCE' ? '▼' : '▶'}</span>
+                </div>
+                 {activeGroup === 'MAINTENANCE' && (
+                  <div className="nav-group-items">
+                    <NavLink to="/admin/incidents" className="layout-nav-item sub-item">
+                       ⚠️ Quản lý sự cố
+                    </NavLink>
+                     <NavLink to="/maintenance" className="layout-nav-item sub-item">
+                       🔧 Bảo trì & Kiểm tra
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+
+              {/* GROUP: HỆ THỐNG */}
+              <div className="nav-group">
+                 <div 
+                  className="nav-group-header" 
+                  onClick={() => setActiveGroup(prev => prev === 'SYSTEM' ? '' : 'SYSTEM')}
+                >
+                  <span className="nav-group-title">HỆ THỐNG</span>
+                  <span className="nav-group-arrow">{activeGroup === 'SYSTEM' ? '▼' : '▶'}</span>
+                </div>
+                 {activeGroup === 'SYSTEM' && (
+                  <div className="nav-group-items">
+                     <NavLink to="/admin" end className="layout-nav-item sub-item">
+                       👤 Trung tâm quản trị
+                    </NavLink>
+                    <NavLink to="/reports" className="layout-nav-item sub-item">
+                       📊 Báo cáo
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+
+            </div>
           )}
         </nav>
 

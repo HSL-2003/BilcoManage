@@ -293,3 +293,55 @@
   background: var(--color-border);
   margin: 4px 0;
 }
+
+/* DROPDOWN SIDEBAR STYLES */
+.layout-nav-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.nav-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background-color 0.2s, color 0.2s;
+  user-select: none;
+  border-radius: 0 20px 20px 0;
+  margin-right: 8px;
+}
+
+.nav-group-header:hover {
+  background-color: #f1f3f4;
+  color: var(--color-text-primary);
+}
+
+.nav-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nav-group-arrow {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.nav-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 8px;
+}
+
+.layout-nav-item.sub-item {
+  padding-left: 36px;
+  height: 36px;
+  font-size: 13px;
+  font-weight: 400;
+}
