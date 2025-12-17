@@ -7,7 +7,7 @@ type Kho = {
   maKho: number
   tenKho: string
   diaChi: string
-  nguoiQuanLy: number
+  nguoiQuanLyID: number
   ghiChu: string
 }
 
@@ -22,7 +22,7 @@ const AdminWarehousesPage = () => {
   const [formData, setFormData] = useState<Partial<Kho>>({
     tenKho: '',
     diaChi: '',
-    nguoiQuanLy: 0,
+    nguoiQuanLyID: 0,
     ghiChu: ''
   })
   const [submitting, setSubmitting] = useState(false)
@@ -51,7 +51,7 @@ const AdminWarehousesPage = () => {
     setFormData({
       tenKho: '',
       diaChi: '',
-      nguoiQuanLy: 0,
+      nguoiQuanLyID: 0,
       ghiChu: ''
     })
     setIsModalOpen(true)
@@ -83,7 +83,7 @@ const AdminWarehousesPage = () => {
       const payload = {
           ...formData,
           // Ensure numbers are numbers
-          nguoiQuanLy: Number(formData.nguoiQuanLy)
+          nguoiQuanLyID: Number(formData.nguoiQuanLyID)
       }
 
       if (editingId) {
@@ -160,7 +160,7 @@ const AdminWarehousesPage = () => {
                         <td style={{fontWeight: 600, color: '#1a73e8'}}>{item.tenKho}</td>
                         <td>{item.diaChi}</td>
                         <td>
-                            <span className="badge">{item.nguoiQuanLy}</span>
+                            <span className="badge">{item.nguoiQuanLyID}</span>
                         </td>
                         <td>{item.ghiChu}</td>
                         <td>
@@ -216,8 +216,8 @@ const AdminWarehousesPage = () => {
                                 type="number"
                                 placeholder="Nhập ID nhân viên quản lý"
                                 required
-                                value={formData.nguoiQuanLy}
-                                onChange={e => setFormData({...formData, nguoiQuanLy: Number(e.target.value)})}
+                                value={formData.nguoiQuanLyID}
+                                onChange={e => setFormData({...formData, nguoiQuanLyID: Number(e.target.value)})}
                             />
                         </div>
 
