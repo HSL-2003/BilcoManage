@@ -109,32 +109,22 @@ const AdminIncidentsPage = () => {
     }
 
     // Determine Reporter ID
-    const reporterId = user?.maNV ? Number(user.maNV) : (user?.id ? Number(user.id) : 0)
-    console.log('👤 Reporter ID (maNV/maND):', reporterId)
-
-    if (reporterId <= 0) {
-        alert('Không thể xác định Mã Nhân Viên của bạn. Vui lòng cập nhật hồ sơ hoặc liên hệ Admin.')
-        setSubmitting(false)
-        return
-    }
+    const reporterId = user?.maNV ? Number(user.maNV) : (user?.id ? Number(user.id) : 0);
 
     try {
       const payload = {
-        // Create explicit payload matching the requirement structure
-        // Note: ngayXuLy might be non-nullable on backend, so we default to thoiGianPhatHien if null
-        maThietBi: formData.maThietBi,
+        maThietBi: Number(formData.maThietBi),
         tieuDe: formData.tieuDe,
-        moTa: formData.moTa,
+        moTa: formData.moTa || '',
         mucDo: formData.mucDo,
-        thoiGianPhatHien: new Date(formData.thoiGianPhatHien!).toISOString(),
-        nguoiBaoCao: reporterId, 
+        thoiGianPhatHien: formData.thoiGianPhatHien ? new Date(formData.thoiGianPhatHien).toISOString() : new Date().toISOString(),
+        nguoiBaoCao: reporterId > 0 ? reporterId : null,
         trangThai: formData.trangThai,
-        giaiPhap: formData.giaiPhap || 'Chưa có', // Ensure not empty
-        ngayXuLy: formData.ngayXuLy ? new Date(formData.ngayXuLy).toISOString() : new Date().toISOString() // Try sending current date if null
-      }
+        giaiPhap: formData.giaiPhap || 'Chưa có',
+        ngayXuLy: formData.ngayXuLy ? new Date(formData.ngayXuLy).toISOString() : null,
+      };
       
-      // Log for debugging
-      console.log('📦 Sending Payload:', JSON.stringify(payload, null, 2))
+      console.log('📦 Sending Refined Payload:', JSON.stringify(payload, null, 2))
 
       if (editingId) {
           // PUT
@@ -149,10 +139,9 @@ const AdminIncidentsPage = () => {
 
       setIsModalOpen(false)
       fetchIncidents()
-    } catch (err: any) {
+    } catch (err) {
       console.error(err)
-      const serverMsg = err.response?.data ? JSON.stringify(err.response.data) : err.message
-      alert(`Thao tác thất bại. Chi tiết lỗi Server: ${serverMsg}`)
+      alert(`Thao tác thất bại. Lỗi Server (500) thường do Mã Thiết Bị không tồn tại hoặc dữ liệu sai. Check Console!`)
     } finally {
       setSubmitting(false)
     }
