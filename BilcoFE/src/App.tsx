@@ -14,6 +14,9 @@ import ProfilePage from './pages/ProfilePage'
 import AdminInventoryPage from './pages/AdminInventoryPage'
 import AdminWarehousesPage from './pages/AdminWarehousesPage'
 import AdminMaterialsPage from './pages/AdminMaterialsPage'
+import AdminSuppliersPage from './pages/AdminSuppliersPage'
+import AdminMaterialTypesPage from './pages/AdminMaterialTypesPage'
+import AdminUnitsPage from './pages/AdminUnitsPage'
 import { useAuth } from './context/AuthContext'
 import './App.css'
 
@@ -123,6 +126,36 @@ function App() {
         element={
           isAuthenticated && isAdmin ? (
             <AdminMaterialsPage />
+          ) : (
+             <Navigate to={isAuthenticated ? '/' : '/login'} replace />
+          )
+        }
+      />
+      <Route
+        path="/admin/suppliers"
+        element={
+          isAuthenticated && isAdmin ? (
+            <AdminSuppliersPage />
+          ) : (
+             <Navigate to={isAuthenticated ? '/' : '/login'} replace />
+          )
+        }
+      />
+      <Route
+        path="/admin/material-types"
+        element={
+          isAuthenticated && isAdmin ? (
+            <AdminMaterialTypesPage />
+          ) : (
+             <Navigate to={isAuthenticated ? '/' : '/login'} replace />
+          )
+        }
+      />
+      <Route
+        path="/admin/units"
+        element={
+          isAuthenticated && isAdmin ? (
+            <AdminUnitsPage />
           ) : (
              <Navigate to={isAuthenticated ? '/' : '/login'} replace />
           )
