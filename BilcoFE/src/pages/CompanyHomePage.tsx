@@ -320,17 +320,17 @@ const CompanyHomePage = () => {
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg" alt="Mercedes" width="60" /></div>
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/BMW_logo_%28gray%29.svg" alt="BMW" width="60" /></div>
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Audi-Logo_2016.svg" alt="Audi" width="80" /></div>
-               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Siemens-logo.svg" alt="Siemens" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIOnIp5uExmjwLyDcpYsiUK0EyMs9XUfnorA&s" alt="Siemens" width="100" /></div>
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Samsung_wordmark.svg" alt="Samsung" width="100" /></div>
-               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Bosch-Logo.svg" alt="Bosch" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://assets.bosch.com/media/global/bosch_group/our_figures/brands/bosch-brand-bosch_res_1280x720.webp" alt="Bosch" width="100" /></div>
                
                {/* Duplicates for marquee effect */}
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg" alt="Mercedes" width="60" /></div>
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/BMW_logo_%28gray%29.svg" alt="BMW" width="60" /></div>
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Audi-Logo_2016.svg" alt="Audi" width="80" /></div>
-               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Siemens-logo.svg" alt="Siemens" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIOnIp5uExmjwLyDcpYsiUK0EyMs9XUfnorA&s" alt="Siemens" width="100" /></div>
                <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Samsung_wordmark.svg" alt="Samsung" width="100" /></div>
-               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Bosch-Logo.svg" alt="Bosch" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://assets.bosch.com/media/global/bosch_group/our_figures/brands/bosch-brand-bosch_res_1280x720.webp" alt="Bosch" width="100" /></div>
            </div>
         </section>
 
