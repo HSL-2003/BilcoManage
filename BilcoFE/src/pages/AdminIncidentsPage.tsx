@@ -120,6 +120,8 @@ const AdminIncidentsPage = () => {
 
     try {
       const payload = {
+        // Create explicit payload matching the requirement structure
+        // Note: ngayXuLy might be non-nullable on backend, so we default to thoiGianPhatHien if null
         maThietBi: formData.maThietBi,
         tieuDe: formData.tieuDe,
         moTa: formData.moTa,
@@ -127,11 +129,12 @@ const AdminIncidentsPage = () => {
         thoiGianPhatHien: new Date(formData.thoiGianPhatHien!).toISOString(),
         nguoiBaoCao: reporterId, 
         trangThai: formData.trangThai,
-        giaiPhap: formData.giaiPhap || '',
-        ngayXuLy: formData.ngayXuLy ? new Date(formData.ngayXuLy).toISOString() : null
+        giaiPhap: formData.giaiPhap || 'Chưa có', // Ensure not empty
+        ngayXuLy: formData.ngayXuLy ? new Date(formData.ngayXuLy).toISOString() : new Date().toISOString() // Try sending current date if null
       }
-
-      console.log('📝 Creating Incident Payload:', payload)
+      
+      // Log for debugging
+      console.log('📦 Sending Payload:', JSON.stringify(payload, null, 2))
 
       if (editingId) {
           // PUT
@@ -146,9 +149,10 @@ const AdminIncidentsPage = () => {
 
       setIsModalOpen(false)
       fetchIncidents()
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
-      alert(`Thao tác thất bại. Lỗi Server (500) thường do Mã Thiết Bị không tồn tại hoặc dữ liệu sai. Check Console!`)
+      const serverMsg = err.response?.data ? JSON.stringify(err.response.data) : err.message
+      alert(`Thao tác thất bại. Chi tiết lỗi Server: ${serverMsg}`)
     } finally {
       setSubmitting(false)
     }
