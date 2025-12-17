@@ -2,22 +2,22 @@ import { useState } from 'react';
 import './AdminGameGallery.css';
 
 // Import local images from src/images
-import img1 from '../images/anhchop.webp';
-import img2 from '../images/images.webp';
-import img3 from '../images/phuonghang.webp';
-import img4 from '../images/sharkbinh.webp';
+import img1 from '../images/water_park_overview.png';
+import img2 from '../images/roller_coaster_future.png';
+import img3 from '../images/kids_play_zone.png';
+import img4 from '../images/wave_pool_tech.png';
 
 // Sample Data
 const GAMES = [
-  { id: 1, img: img1, title: 'Công viên nước' },
+  { id: 1, img: img1, title: 'Đại dương vô cực' },
   { id: 2, img: img2, title: 'Tàu lượn siêu tốc' },
-  { id: 3, img: img3, title: 'Khu vui chơi trẻ em' },
-  { id: 4, img: img4, title: 'Hồ tạo sóng' },
+  { id: 3, img: img3, title: 'Vương quốc trẻ thơ' },
+  { id: 4, img: img4, title: 'Hồ tạo sóng Neon' },
   // Duplicate for seamless loop
-  { id: 5, img: img1, title: 'Công viên nước' },
+  { id: 5, img: img1, title: 'Đại dương vô cực' },
   { id: 6, img: img2, title: 'Tàu lượn siêu tốc' },
-  { id: 7, img: img3, title: 'Khu vui chơi trẻ em' },
-  { id: 8, img: img4, title: 'Hồ tạo sóng' },
+  { id: 7, img: img3, title: 'Vương quốc trẻ thơ' },
+  { id: 8, img: img4, title: 'Hồ tạo sóng Neon' },
 ];
 
 const AdminGameGallery = () => {
