@@ -143,8 +143,8 @@ const ChatWidget = () => {
     <div className="chat-widget-wrapper">
       {!isOpen && (
         <button className="chat-launcher" onClick={() => setIsOpen(true)}>
-          <span className="chat-launcher-icon">💬</span>
-          <span className="chat-launcher-label">Hỗ trợ đối tác</span>
+          <span className="chat-launcher-icon">🤖</span>
+          <span className="chat-launcher-label">Trợ lý ảo Bilco</span>
         </button>
       )}
 

@@ -317,16 +317,20 @@ const CompanyHomePage = () => {
         <section className="company-section reveal">
            <h2 className="company-section-title" style={{fontSize: '24px', opacity: 0.8}}>Đối tác chiến lược & Chứng nhận</h2>
            <div className="company-partners-track">
-               {[1, 2, 3, 4, 5, 6].map((i) => (
-                   <div key={i} className="company-partner-logo">
-                       <div style={{fontWeight: 900, fontSize: '24px', color: '#475569'}}>LOGO {i}</div>
-                   </div>
-               ))}
-               {[1, 2, 3, 4, 5, 6].map((i) => (
-                   <div key={`dup-${i}`} className="company-partner-logo">
-                       <div style={{fontWeight: 900, fontSize: '24px', color: '#475569'}}>LOGO {i}</div>
-                   </div>
-               ))}
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg" alt="Mercedes" width="60" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/BMW_logo_%28gray%29.svg" alt="BMW" width="60" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Audi-Logo_2016.svg" alt="Audi" width="80" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Siemens-logo.svg" alt="Siemens" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Samsung_wordmark.svg" alt="Samsung" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Bosch-Logo.svg" alt="Bosch" width="100" /></div>
+               
+               {/* Duplicates for marquee effect */}
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg" alt="Mercedes" width="60" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/BMW_logo_%28gray%29.svg" alt="BMW" width="60" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Audi-Logo_2016.svg" alt="Audi" width="80" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Siemens-logo.svg" alt="Siemens" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Samsung_wordmark.svg" alt="Samsung" width="100" /></div>
+               <div className="company-partner-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Bosch-Logo.svg" alt="Bosch" width="100" /></div>
            </div>
         </section>
 
