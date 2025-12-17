@@ -12,6 +12,7 @@ import AdminEquipmentPage from './pages/AdminEquipmentPage'
 import CompanyHomePage from './pages/CompanyHomePage'
 import ProfilePage from './pages/ProfilePage'
 import AdminInventoryPage from './pages/AdminInventoryPage'
+import AdminWarehousesPage from './pages/AdminWarehousesPage'
 import { useAuth } from './context/AuthContext'
 import './App.css'
 
@@ -100,6 +101,17 @@ function App() {
         element={
           isAuthenticated && isAdmin ? (
             <AdminInventoryPage />
+          ) : (
+             <Navigate to={isAuthenticated ? '/' : '/login'} replace />
+          )
+        }
+      />
+
+      <Route
+        path="/admin/warehouses"
+        element={
+          isAuthenticated && isAdmin ? (
+            <AdminWarehousesPage />
           ) : (
              <Navigate to={isAuthenticated ? '/' : '/login'} replace />
           )
