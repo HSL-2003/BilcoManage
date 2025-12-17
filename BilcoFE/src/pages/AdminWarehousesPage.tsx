@@ -32,6 +32,7 @@ const AdminWarehousesPage = () => {
     try {
       setLoading(true)
       const data = await apiGet<Kho[]>('/api/Kho')
+      console.log('📦 Warehouse Data:', data) // Debug log
       setItems(data || [])
     } catch (err) {
       console.error(err)
@@ -160,7 +161,10 @@ const AdminWarehousesPage = () => {
                         <td style={{fontWeight: 600, color: '#1a73e8'}}>{item.tenKho}</td>
                         <td>{item.diaChi}</td>
                         <td>
-                            <span className="badge">{item.nguoiQuanLyID}</span>
+                            <span className="badge">
+                                {/* Fallback for case sensitivity issues */}
+                                {item.nguoiQuanLyID ?? (item as any).nguoiQuanLyId ?? (item as any).nguoiQuanLy ?? (item as any).maNV ?? '?'}
+                            </span>
                         </td>
                         <td>{item.ghiChu}</td>
                         <td>
