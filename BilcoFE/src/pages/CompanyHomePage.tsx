@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './company.css'
 import ChatWidget from '../components/ChatWidget'
 import SpiderWebCursor from '../components/SpiderWebCursor'
@@ -9,10 +9,53 @@ import sharkBinhImg from '../images/sharkbinh.webp'
 
 type InfoSectionKey = 'new' | 'investor' | 'technical'
 
+const CountUp = ({ end, duration = 2000, suffix = '' }: { end: number; duration?: number; suffix?: string }) => {
+  const [count, setCount] = useState(0)
+  const ref = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          let start = 0
+          const stepTime = 16 // ~60fps
+          const steps = duration / stepTime
+          const increment = end / steps
+          
+          const timer = setInterval(() => {
+            start += increment
+            if (start >= end) {
+              setCount(end)
+              clearInterval(timer)
+            } else {
+              setCount(Math.floor(start))
+            }
+          }, stepTime)
+          
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [end, duration])
+
+  return <span ref={ref}>{count}{suffix}</span>
+}
+
 const CompanyHomePage = () => {
   const [openInfo, setOpenInfo] = useState<InfoSectionKey | null>('new')
-
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -73,6 +116,13 @@ const CompanyHomePage = () => {
         } else {
           header.classList.remove('scrolled')
         }
+      }
+
+      // Show scroll to top button
+      if (totalScroll > 500) {
+        setShowScrollTop(true)
+      } else {
+        setShowScrollTop(false)
       }
     }
 
@@ -174,15 +224,15 @@ const CompanyHomePage = () => {
                 <p className="company-hero-panel-title">Con số nổi bật</p>
                 <div className="company-hero-metrics">
                   <div className="metric">
-                    <div className="metric-value">15+</div>
+                    <div className="metric-value"><CountUp end={15} suffix="+" /></div>
                     <div className="metric-label">Năm kinh nghiệm</div>
                   </div>
                   <div className="metric">
-                    <div className="metric-value">100+</div>
+                    <div className="metric-value"><CountUp end={100} suffix="+" /></div>
                     <div className="metric-label">Dự án công viên nước</div>
                   </div>
                   <div className="metric">
-                    <div className="metric-value">10+</div>
+                    <div className="metric-value"><CountUp end={10} suffix="+" /></div>
                     <div className="metric-label">Quốc gia & vùng lãnh thổ</div>
                   </div>
                 </div>
@@ -261,6 +311,55 @@ const CompanyHomePage = () => {
               </li>
             </ul>
           </div>
+        </section>
+
+        {/* PARTNERS SECTION */}
+        <section className="company-section reveal">
+           <h2 className="company-section-title" style={{fontSize: '24px', opacity: 0.8}}>Đối tác chiến lược & Chứng nhận</h2>
+           <div className="company-partners-track">
+               {[1, 2, 3, 4, 5, 6].map((i) => (
+                   <div key={i} className="company-partner-logo">
+                       <div style={{fontWeight: 900, fontSize: '24px', color: '#475569'}}>LOGO {i}</div>
+                   </div>
+               ))}
+               {[1, 2, 3, 4, 5, 6].map((i) => (
+                   <div key={`dup-${i}`} className="company-partner-logo">
+                       <div style={{fontWeight: 900, fontSize: '24px', color: '#475569'}}>LOGO {i}</div>
+                   </div>
+               ))}
+           </div>
+        </section>
+
+        {/* NEWS SECTION */}
+        <section className="company-section reveal">
+           <div className="company-section-header-row">
+             <div>
+                <h2 className="company-section-title">Tin tức & Sự kiện</h2>
+                <p className="company-section-subtitle">Cập nhật những hoạt động mới nhất, xu hướng công nghệ và giải thưởng của Bilco.</p>
+             </div>
+             <a href="#news-all" className="btn-secondary" style={{height: '40px', padding: '0 20px', fontSize: '14px'}}>Xem tất cả &rarr;</a>
+           </div>
+           
+           <div className="company-news-grid">
+              <article className="company-news-card">
+                 <div className="news-date">17 Th12, 2025</div>
+                 <h3 className="news-title">Bilco đạt chứng nhận an toàn ISO 45001:2023 cho quy trình lắp đặt</h3>
+                 <p className="news-excerpt">Khẳng định cam kết cao nhất về an toàn lao động và chất lượng công trình trong mọi dự án.</p>
+                 <a href="#" className="news-link">Đọc tiếp</a>
+              </article>
+              <article className="company-news-card">
+                  <div className="news-date">10 Th12, 2025</div>
+                  <h3 className="news-title">Khởi công tổ hợp công viên nước lớn nhất miền Trung</h3>
+                  <p className="news-excerpt">Dự án quy mô 15ha với tổng vốn đầu tư 500 tỷ đồng, dự kiến hoàn thành vào quý 4/2026.</p>
+                  <a href="#" className="news-link">Đọc tiếp</a>
+              </article>
+              <article className="company-news-card">
+                  <div className="news-date">05 Th12, 2025</div>
+                  <h3 className="news-title">Ra mắt giải pháp "Smart Pool" - Quản lý hồ bơi bằng AI</h3>
+                  <p className="news-excerpt">Tự động cân bằng hóa chất, tối ưu điện năng và giám sát an toàn 24/7 qua ứng dụng di động.</p>
+                  <a href="#" className="news-link">Đọc tiếp</a>
+              </article>
+           </div>
         </section>
 
         <section id="info" className="company-section company-section-clients reveal">
@@ -535,6 +634,24 @@ const CompanyHomePage = () => {
           </div>
         </section>
 
+        {/* NEWSLETTER */}
+        <section className="company-section reveal" style={{textAlign: 'center', maxWidth: '600px', margin: '0 auto 60px'}}>
+             <div className="company-newsletter-box">
+                <h3 style={{fontSize: '24px', fontWeight: 700, marginBottom: '16px', color: '#fff'}}>Đăng ký nhận bản tin</h3>
+                <p style={{color: '#94a3b8', marginBottom: '24px'}}>Nhận thông tin mới nhất về xu hướng thiết kế công viên nước và các giải pháp vận hành an toàn.</p>
+                <div style={{display: 'flex', gap: '12px'}}>
+                    <input 
+                        className="admin-input" 
+                        placeholder="Email của bạn..." 
+                        style={{flex: 1, padding: '12px 20px', borderRadius: '99px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)'}}
+                    />
+                    <button className="btn-primary" style={{height: 'auto', borderRadius: '99px', padding: '12px 24px'}}>
+                        Đăng ký
+                    </button>
+                </div>
+             </div>
+        </section>
+
         <section className="company-cta reveal">
           <div className="company-cta-content">
             <h2 className="company-cta-title">Sẵn sàng nâng tầm dự án của bạn?</h2>
@@ -594,6 +711,14 @@ const CompanyHomePage = () => {
       </footer>
       <ChatWidget />
       <SpiderWebCursor />
+      
+      <button 
+        className={`scroll-to-top-btn ${showScrollTop ? 'visible' : ''}`} 
+        onClick={scrollToTop}
+        aria-label="Scroll to top"
+      >
+        ↑
+      </button>
     </div>
   )
 }
