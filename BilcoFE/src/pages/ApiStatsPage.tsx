@@ -52,7 +52,7 @@ const ApiStatsPage = () => {
     <MainLayout>
       <div style={{ padding: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 600 }}>Thống Kê API Call</h1>
+          <h1 style={{ fontSize: '24px', fontWeight: 600 }}>Thống Kê </h1>
           <button 
             onClick={clearLogs}
             style={{ 
