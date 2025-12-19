@@ -146,9 +146,9 @@ const CompanyHomePage = () => {
       <CardNav 
          logo={undefined} 
          logoAlt="Bilco Logo"
-         baseColor="#fff"
-         menuColor="#0f172a"
-         buttonBgColor="#1A73E8"
+         baseColor="#000000"
+         menuColor="#ffffff"
+         buttonBgColor="#2563eb"
          buttonTextColor="#fff"
          onCtaClick={() => window.location.href = '/login'}
          items={[

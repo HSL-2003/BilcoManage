@@ -143,6 +143,90 @@ const CardNav = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
+  // SCROLL ANIMATION LOGIC
+  useLayoutEffect(() => {
+    const container = document.querySelector('.card-nav-container') as HTMLElement;
+    const nav = navRef.current;
+    if (!container || !nav) return;
+
+    // Initial state
+    let isShrunk = false;
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isMobile = window.innerWidth <= 768;
+      
+      // Determine direction: true if scrolling down
+      const scrollingDown = currentScrollY > lastScrollY;
+      
+      // Threshold to trigger shrink (e.g., scrolled past 50px)
+      const shouldShrink = currentScrollY > 50 && scrollingDown && !isExpanded;
+      const shouldExpand = (currentScrollY <= 50 || !scrollingDown) && !isExpanded;
+
+      if (shouldShrink && !isShrunk) {
+        // SHRINK ANIMATION
+        isShrunk = true;
+        gsap.to(container, {
+          width: 'auto', // Shrink width
+          left: '20px', // Move to left corner
+          top: '20px',
+          x: '0%', // Reset centering transform
+          duration: 0.5,
+          ease: 'power3.inOut'
+        });
+        
+        // Hide CTA and menu items, show only logo/hamburger
+        gsap.to('.card-nav-cta-button, .hamburger-menu', {
+             opacity: 0,
+             width: 0,
+             padding: 0,
+             pointerEvents: 'none',
+             duration: 0.3
+        });
+        
+        // Ensure Logo is visible and maybe adjust padding
+        gsap.to(nav, {
+             paddingRight: '1rem', // Adjust padding
+             duration: 0.3 
+        });
+
+      } else if (shouldExpand && isShrunk) {
+        // EXPAND ANIMATION
+        isShrunk = false;
+        gsap.to(container, {
+          width: isMobile ? '90%' : '90%',
+          maxWidth: '800px',
+          left: '50%',
+          top: isMobile ? '1.2em' : '2em',
+          x: '-50%', // Restore centering
+          duration: 0.5,
+          ease: 'power3.inOut'
+        });
+
+        // Restore elements
+       gsap.to('.card-nav-cta-button, .hamburger-menu', {
+             opacity: 1,
+             width: 'auto',
+             padding: isMobile ? 0 : '0 1rem', // Restore original padding
+             pointerEvents: 'auto',
+             duration: 0.3,
+             delay: 0.1
+        });
+        
+         gsap.to(nav, {
+             paddingRight: 0, 
+             duration: 0.3
+        });
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isExpanded]);
+
   const toggleMenu = () => {
     const tl = tlRef.current;
     if (!tl) return;
@@ -177,11 +261,11 @@ const CardNav = ({
             <div className="hamburger-line" />
           </div>
 
-          <div className="logo-container">
+          <div className="logo-container" style={{transition: 'all 0.3s'}}>
             {logo ? (
                  <img src={logo} alt={logoAlt} className="logo" />
             ) : (
-                <span className="logo-text" style={{fontWeight: 800, fontSize: '20px', color: menuColor}}>Bilco</span>
+                <span className="logo-text" style={{fontWeight: 800, fontSize: '20px', color: menuColor, whiteSpace: 'nowrap'}}>Bilco</span>
             )}
            
           </div>
