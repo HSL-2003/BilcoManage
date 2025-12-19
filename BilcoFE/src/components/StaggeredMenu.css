@@ -157,15 +157,49 @@
     -ms-overflow-style: none;
     /* IE/Edge */
     z-index: 10;
+    pointer-events: auto;
+    /* Fix click issue */
 }
 
-.staggered-menu-panel::-webkit-scrollbar {
-    display: none;
+/* ... */
+
+.sm-panel-item {
+    position: relative;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.5rem;
+    /* Slightly smaller for pills */
+    cursor: pointer;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Center text */
+    text-decoration: none;
+    padding: 12px 30px;
+    /* Pill padding */
+    border-radius: 999px;
+    /* Rounded pill */
+    background: rgba(255, 255, 255, 0.05);
+    /* Subtle background */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle border */
+    gap: 0;
 }
 
-[data-position='left'] .staggered-menu-panel {
-    right: auto;
-    left: 0;
+.sm-panel-item:hover {
+    color: #fff;
+    background: var(--sm-accent, #5227ff);
+    border-color: var(--sm-accent, #5227ff);
+    transform: translateX(10px) scale(1.05);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+right: auto;
+left: 0;
 }
 
 .sm-prelayers {
@@ -283,35 +317,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.sm-panel-item {
-    position: relative;
-    color: #fff;
-    font-weight: 600;
-    /* Refined to 600 */
-    font-size: 2rem;
-    /* Adjusted to 2rem for balance */
-    cursor: pointer;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    transition:
-        transform 0.3s ease,
-        color 0.25s;
-    display: inline-flex;
-    /* Use flex for alignment */
-    align-items: baseline;
-    text-decoration: none;
-    padding: 10px 0;
-    gap: 15px;
-    /* Space between number and text */
-}
-
-.sm-panel-item:hover {
-    color: var(--sm-accent, #5227ff);
-    transform: translateX(10px);
-    /* Slide effect */
 }
 
 .staggered-menu-panel .sm-socials-list .sm-socials-link {

@@ -160,7 +160,7 @@ const CompanyHomePage = () => {
              { label: 'Zalo', link: 'https://zalo.me' }
         ]}
         displaySocials={true}
-        displayItemNumbering={true}
+        displayItemNumbering={false}
         menuButtonColor="#fff" // Initial color (will be managed by scroll logic/theme)
         openMenuButtonColor="#fff"
         changeMenuColorOnOpen={true}
