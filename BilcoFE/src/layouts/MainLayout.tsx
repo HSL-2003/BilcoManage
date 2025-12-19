@@ -1,6 +1,5 @@
 import { type ReactNode, useState, useRef, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Link, NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import './MainLayout.css'
 import Galaxy from '../components/Galaxy'
@@ -218,7 +217,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
       <main className="layout-content">{children}</main>
       </div>
-      <SnowCursor />
     </div>
   )
 }
