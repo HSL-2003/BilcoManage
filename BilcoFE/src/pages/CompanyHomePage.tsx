@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './company.css'
+import CardNav from '../components/CardNav'
 import ChatWidget from '../components/ChatWidget'
 import SpiderWebCursor from '../components/SpiderWebCursor'
 import anhChopImg from '../images/anhchop.webp'
@@ -108,15 +109,7 @@ const CompanyHomePage = () => {
         blob.style.setProperty('--scroll-y', `${yPos}px`)
       })
       
-      // Header transformation
-      const header = document.querySelector('.company-header')
-      if (header) {
-        if (totalScroll > 50) {
-          header.classList.add('scrolled')
-        } else {
-          header.classList.remove('scrolled')
-        }
-      }
+      // Header transformation logic removed (replaced by CardNav)
 
       // Show scroll to top button
       if (totalScroll > 500) {
@@ -144,35 +137,52 @@ const CompanyHomePage = () => {
         style={{ transform: `scaleX(${scrollProgress})` }}
       />
       
-      <header className="company-header">
-        <div className="company-header-inner">
-          <a href="/company" className="company-logo-link">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="12" fill="url(#logo_grad)"/>
-              <path d="M12 20C12 20 15 15 20 15C25 15 28 20 28 20" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-              <path d="M12 26C12 26 16 23 20 23C24 23 28 26 28 26" stroke="white" strokeWidth="3" strokeLinecap="round" strokeOpacity="0.6"/>
-              <circle cx="28" cy="12" r="3" fill="#8AB4F8"/>
-              <defs>
-                <linearGradient id="logo_grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#1A73E8"/>
-                  <stop offset="1" stopColor="#0D47A1"/>
-                </linearGradient>
-              </defs>
-            </svg>
-            <span className="company-logo-text">Bilco</span>
-          </a>
-          <nav className="company-nav">
-            <a href="#services">Dịch vụ</a>
-            <a href="#why-us">Giải pháp</a>
-            <a href="#info">Khách hàng</a>
-          </nav>
-          <div className="company-header-actions">
-            <a href="/login" className="company-header-link">
-              Đăng nhập hệ thống
-            </a>
-          </div>
-        </div>
-      </header>
+      {/* Scroll Progress Bar */}
+      <div 
+        className="scroll-progress-bar" 
+        style={{ transform: `scaleX(${scrollProgress})` }}
+      />
+      
+      <CardNav 
+         logo={undefined} 
+         logoAlt="Bilco Logo"
+         baseColor="#fff"
+         menuColor="#0f172a"
+         buttonBgColor="#1A73E8"
+         buttonTextColor="#fff"
+         onCtaClick={() => window.location.href = '/login'}
+         items={[
+            {
+              label: "Dịch vụ",
+              bgColor: "#0f172a",
+              textColor: "#fff",
+              links: [
+                { label: "Nông nghiệp cao", href: "#services" },
+                { label: "Lắp đặt nhà máy", href: "#services" },
+                { label: "Khu giải trí", href: "#services" }
+              ]
+            },
+            {
+              label: "Giải pháp", 
+              bgColor: "#1e293b", 
+              textColor: "#fff", 
+              links: [
+                { label: "Quy trình", href: "#why-us" },
+                { label: "Công nghệ", href: "#why-us" }
+              ]
+            },
+            {
+              label: "Khách hàng",
+              bgColor: "#334155",
+              textColor: "#fff",
+              links: [
+                { label: "Đối tác tiêu biểu", href: "#info" },
+                { label: "Tin tức", href: "#news-all" },
+                { label: "Liên hệ", href: "#contact" }
+              ]
+            }
+         ]}
+      />
 
       <main className="company-main">
         <section className="company-hero">
