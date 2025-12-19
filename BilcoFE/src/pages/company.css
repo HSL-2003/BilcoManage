@@ -101,6 +101,34 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.4s ease;
+}
+
+/* SCROLLED HEADER STATE */
+.company-header.scrolled {
+  position: fixed;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(12px);
+  padding-top: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  animation: slideDownHeader 0.3s ease-out;
+}
+
+.company-header.scrolled .company-header-inner {
+  height: 60px;
+}
+
+@keyframes slideDownHeader {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }
 
 .company-logo-link {
@@ -169,6 +197,20 @@ body {
   background: #f8fafc;
   box-shadow: var(--shadow-glow);
   transform: translateY(-1px);
+  transform: translateY(-1px);
+}
+
+.company-header.scrolled .company-header-link {
+  padding: 8px 16px;
+  font-size: 13px;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+}
+
+.company-header.scrolled .company-header-link:hover {
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.6);
 }
 
 /* HERO SECTION - Compact */

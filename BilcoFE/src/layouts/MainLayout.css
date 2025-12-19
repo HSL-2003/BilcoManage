@@ -253,7 +253,7 @@
   border-radius: 8px;
   padding: 8px 0;
   min-width: 220px;
-  z-index: 2002;
+  z-index: 99999;
   animation: dropdownFadeIn 0.2s ease-out;
 }
 
