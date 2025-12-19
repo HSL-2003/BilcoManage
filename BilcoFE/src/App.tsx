@@ -17,6 +17,7 @@ import AdminMaterialsPage from './pages/AdminMaterialsPage'
 import AdminSuppliersPage from './pages/AdminSuppliersPage'
 import AdminMaterialTypesPage from './pages/AdminMaterialTypesPage'
 import AdminUnitsPage from './pages/AdminUnitsPage'
+import AdminMaintenancePlanningPage from './pages/AdminMaintenancePlanningPage'
 import ApiStatsPage from './pages/ApiStatsPage'
 import { useAuth } from './context/AuthContext'
 import './App.css'
@@ -167,6 +168,16 @@ function App() {
         element={
           isAuthenticated && isAdmin ? (
             <ApiStatsPage />
+          ) : (
+             <Navigate to={isAuthenticated ? '/' : '/login'} replace />
+          )
+        }
+      />
+      <Route
+        path="/admin/maintenance-plans"
+        element={
+          isAuthenticated && isAdmin ? (
+            <AdminMaintenancePlanningPage />
           ) : (
              <Navigate to={isAuthenticated ? '/' : '/login'} replace />
           )
