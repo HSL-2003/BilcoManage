@@ -143,8 +143,11 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                      <NavLink to="/admin" end className="layout-nav-item sub-item">
                        Trung tâm quản trị
                     </NavLink>
-                    <NavLink to="/reports" className="layout-nav-item sub-item">
+                     <NavLink to="/reports" className="layout-nav-item sub-item">
                        Báo cáo
+                    </NavLink>
+                    <NavLink to="/admin/api-stats" className="layout-nav-item sub-item">
+                       Thống kê API
                     </NavLink>
                   </div>
                 )}

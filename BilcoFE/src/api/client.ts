@@ -1,13 +1,56 @@
 const BASE_URL = 'https://bilcobe-2.onrender.com'
 
-export async function apiGet<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, createOptions('GET', undefined, options))
+// --- LOGGING HELPER ---
+const LOG_KEY = 'bilco_api_logs'
+const MAX_LOGS = 100
 
-  if (!res.ok) {
-    throw new Error(`GET ${path} failed with status ${res.status}`)
+interface ApiLog {
+  id: string
+  method: string
+  url: string
+  status: number
+  duration: number
+  timestamp: string
+}
+
+function trackApiCall(method: string, url: string, status: number, startTime: number) {
+  const duration = performance.now() - startTime
+  const newLog: ApiLog = {
+    id: Math.random().toString(36).substr(2, 9),
+    method,
+    url: url.replace(BASE_URL, ''),
+    status,
+    duration,
+    timestamp: new Date().toISOString()
   }
 
-  return res.json()
+  try {
+    const stored = localStorage.getItem(LOG_KEY)
+    let logs: ApiLog[] = stored ? JSON.parse(stored) : []
+    logs.push(newLog)
+    if (logs.length > MAX_LOGS) {
+      logs = logs.slice(logs.length - MAX_LOGS)
+    }
+    localStorage.setItem(LOG_KEY, JSON.stringify(logs))
+  } catch (e) {
+    // Ignore logging errors
+  }
+}
+// ----------------------
+
+export async function apiGet<T>(path: string, options?: RequestInit): Promise<T> {
+  const start = performance.now()
+  let status = 0
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, createOptions('GET', undefined, options))
+    status = res.status
+    if (!res.ok) {
+      throw new Error(`GET ${path} failed with status ${res.status}`)
+    }
+    return await res.json()
+  } finally {
+    trackApiCall('GET', path, status || 500, start)
+  }
 }
 
 export async function apiPost<TBody, TResponse>(
@@ -15,13 +58,18 @@ export async function apiPost<TBody, TResponse>(
   body: TBody,
   options?: RequestInit,
 ): Promise<TResponse> {
-  const res = await fetch(`${BASE_URL}${path}`, createOptions('POST', body, options))
-
-  if (!res.ok) {
-    throw new Error(`POST ${path} failed with status ${res.status}`)
+  const start = performance.now()
+  let status = 0
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, createOptions('POST', body, options))
+    status = res.status
+    if (!res.ok) {
+      throw new Error(`POST ${path} failed with status ${res.status}`)
+    }
+    return await res.json()
+  } finally {
+    trackApiCall('POST', path, status || 500, start)
   }
-
-  return res.json()
 }
 
 export async function apiPut<TBody, TResponse>(
@@ -29,34 +77,42 @@ export async function apiPut<TBody, TResponse>(
   body: TBody,
   options?: RequestInit,
 ): Promise<TResponse> {
-  const res = await fetch(`${BASE_URL}${path}`, createOptions('PUT', body, options))
-
-  if (res.status === 204) {
-    return {} as TResponse
+  const start = performance.now()
+  let status = 0
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, createOptions('PUT', body, options))
+    status = res.status
+    if (res.status === 204) {
+      return {} as TResponse
+    }
+    if (!res.ok) {
+      throw new Error(`PUT ${path} failed with status ${res.status}`)
+    }
+    return await res.json()
+  } finally {
+    trackApiCall('PUT', path, status || 500, start)
   }
-
-  if (!res.ok) {
-    throw new Error(`PUT ${path} failed with status ${res.status}`)
-  }
-
-  return res.json()
 }
 
 export async function apiDelete<TResponse>(
   path: string,
   options?: RequestInit,
 ): Promise<TResponse> {
-  const res = await fetch(`${BASE_URL}${path}`, createOptions('DELETE', undefined, options))
-
-  if (res.status === 204 || res.status === 200) {
-    return {} as TResponse
+  const start = performance.now()
+  let status = 0
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, createOptions('DELETE', undefined, options))
+    status = res.status
+    if (res.status === 204 || res.status === 200) {
+      return {} as TResponse
+    }
+    if (!res.ok) {
+      throw new Error(`DELETE ${path} failed with status ${res.status}`)
+    }
+    return await res.json()
+  } finally {
+    trackApiCall('DELETE', path, status || 500, start)
   }
-
-  if (!res.ok) {
-    throw new Error(`DELETE ${path} failed with status ${res.status}`)
-  }
-
-  return res.json()
 }
 
 function createOptions(method: string, body?: unknown, options?: RequestInit): RequestInit {
