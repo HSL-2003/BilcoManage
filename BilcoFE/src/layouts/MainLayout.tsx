@@ -1,7 +1,7 @@
 import { type ReactNode, useState, useRef, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import SnowCursor from '../components/SnowCursor'
 import './MainLayout.css'
 import Galaxy from '../components/Galaxy'
 
