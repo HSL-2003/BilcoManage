@@ -6,6 +6,7 @@ type User = {
   id: string
   username: string
   role: 'user' | 'admin'
+  maND?: number // Added maND
   maNV?: string // Employee number - needed for API calls
   hoTen?: string
   email?: string
@@ -92,6 +93,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         id: result.user?.id ?? result.maND?.toString() ?? username,
         username: result.user?.username ?? result.tenDangNhap ?? username,
         role: normalizedRole,
+        maND: result.maND ?? (result.user?.id ? Number(result.user.id) : undefined), // Map maND
         maNV: result.maNV ?? result.user?.maNV ?? result.maND?.toString(), // Save employee number
         // Map additional fields from response or nested user object
         hoTen: result.hoTen ?? result.user?.hoTen ?? '',
