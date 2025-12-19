@@ -232,16 +232,21 @@
   box-shadow: var(--shadow-2);
 }
 
+
 .btn-secondary {
   color: var(--color-primary);
-  border: 1px solid var(--color-border);
-  background-color: transparent;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .btn-secondary:hover {
-  background-color: rgba(26, 115, 232, 0.04);
-  /* Light blue tint */
-  border-color: var(--color-border);
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(56, 189, 248, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
 }
 
 .btn-link {
@@ -250,10 +255,14 @@
   color: var(--color-primary);
   height: auto;
   border-radius: 0;
+  box-shadow: none;
 }
 
 .btn-link:hover {
   text-decoration: underline;
+  transform: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 /* FORMS */

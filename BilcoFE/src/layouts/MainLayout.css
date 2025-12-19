@@ -253,7 +253,7 @@
   border-radius: 8px;
   padding: 8px 0;
   min-width: 220px;
-  z-index: 1000;
+  z-index: 2002;
   animation: dropdownFadeIn 0.2s ease-out;
 }
 
@@ -330,13 +330,48 @@
 .nav-group-arrow {
   font-size: 10px;
   opacity: 0.6;
+  transition: transform 0.2s ease;
+  display: inline-block;
+  width: 14px;
+  text-align: center;
 }
+
+/* This requires the parent component to apply a class or handle state, 
+   but since we render arrow manually based on state, we can animate it 
+   by checking if it is '▼' or '▶' in JS, OR we can stick to rotation 
+   if we change the JS to always render one icon and rotate it. */
+/* Ideally, to animate rotation, we should keep the icon same and rotate parent.
+   However, the current JS toggles the character. 
+   Let's update the JS to use a class for open state if possible, 
+   or just accept the arrow change. 
+   
+   Wait, the JS swaps the character: {showDropdown === 'ASSETS' ? '▼' : '▶'}
+   So CSS rotation won't work perfectly unless we change JS to toggle a class.
+   Let's try to add a simple fade in for items first.
+*/
 
 .nav-group-items {
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding-bottom: 8px;
+  animation: slideDown 0.2s ease-out forwards;
+  transform-origin: top;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+    max-height: 0;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+    /* Arbitrary large height */
+  }
 }
 
 .layout-nav-item.sub-item {
@@ -344,4 +379,18 @@
   height: 36px;
   font-size: 13px;
   font-weight: 400;
+  border-left: 2px solid transparent;
+  /* Visual alignment helper */
+}
+
+.layout-nav-item.sub-item:hover {
+  border-left-color: var(--color-border);
+}
+
+.layout-nav-item.sub-item.active {
+  background-color: rgba(26, 115, 232, 0.08);
+  /* Lighter blue */
+  color: var(--color-primary);
+  border-left-color: var(--color-primary);
+  font-weight: 500;
 }

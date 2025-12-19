@@ -219,10 +219,10 @@ const AdminInventoryPage = () => {
 
         {/* MODAL */}
         {isModalOpen && (
-             <div className="modal-overlay">
-                <div className="modal-content" style={{width: '600px'}}>
-                    <div className="modal-header" style={{borderBottom: '1px solid #eee', paddingBottom: '16px', marginBottom: '20px'}}>
-                        <h2 style={{margin: 0, fontSize: '20px'}}>{editingId ? 'Cập nhật tồn kho' : 'Thêm tồn kho mới'}</h2>
+             <div className="admin-modal-overlay">
+                <div className="admin-modal" style={{width: '600px'}}>
+                    <div className="admin-card-header" style={{borderBottom: '1px solid #eee', paddingBottom: '16px', marginBottom: '20px'}}>
+                        <h2 style={{margin: 0, fontSize: '20px', color: '#fff'}}>{editingId ? 'Cập nhật tồn kho' : 'Thêm tồn kho mới'}</h2>
                     </div>
                     
                     <form onSubmit={handleSubmit}>

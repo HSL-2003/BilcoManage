@@ -57,7 +57,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 {activeGroup === 'ASSETS' && (
                   <div className="nav-group-items">
                     <NavLink to="/admin/equipment" className="layout-nav-item sub-item">
-                       🎡 Trò chơi / Thiết bị
+                       Trò chơi / Thiết bị
                     </NavLink>
                   </div>
                 )}
@@ -75,22 +75,22 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 {activeGroup === 'INVENTORY' && (
                   <div className="nav-group-items">
                     <NavLink to="/admin/inventory" className="layout-nav-item sub-item">
-                       📦 Tổng quan tồn kho
+                       Tổng quan tồn kho
                     </NavLink>
                     <NavLink to="/admin/materials" className="layout-nav-item sub-item">
-                       🔩 Danh mục vật tư
+                       Danh mục vật tư
                     </NavLink>
                      <NavLink to="/admin/material-types" className="layout-nav-item sub-item">
-                       🏷️ Loại vật tư
+                       Loại vật tư
                     </NavLink>
                     <NavLink to="/admin/units" className="layout-nav-item sub-item">
-                       ⚖️ Đơn vị tính
+                       Đơn vị tính
                     </NavLink>
                     <NavLink to="/admin/warehouses" className="layout-nav-item sub-item">
-                       🏭 Kho bãi
+                       Kho bãi
                     </NavLink>
                     <NavLink to="/admin/suppliers" className="layout-nav-item sub-item">
-                       🤝 Nhà cung cấp
+                       Nhà cung cấp
                     </NavLink>
                   </div>
                 )}
@@ -108,10 +108,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                  {activeGroup === 'MAINTENANCE' && (
                   <div className="nav-group-items">
                     <NavLink to="/admin/incidents" className="layout-nav-item sub-item">
-                       ⚠️ Quản lý sự cố
+                       Quản lý sự cố
                     </NavLink>
                      <NavLink to="/maintenance" className="layout-nav-item sub-item">
-                       🔧 Bảo trì & Kiểm tra
+                       Bảo trì & Kiểm tra
                     </NavLink>
                   </div>
                 )}
@@ -129,10 +129,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                  {activeGroup === 'SYSTEM' && (
                   <div className="nav-group-items">
                      <NavLink to="/admin" end className="layout-nav-item sub-item">
-                       👤 Trung tâm quản trị
+                       Trung tâm quản trị
                     </NavLink>
                     <NavLink to="/reports" className="layout-nav-item sub-item">
-                       📊 Báo cáo
+                       Báo cáo
                     </NavLink>
                   </div>
                 )}
