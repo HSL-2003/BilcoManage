@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './company.css'
-import CardNav from '../components/CardNav'
+import StaggeredMenu from '../components/StaggeredMenu'
 import ChatWidget from '../components/ChatWidget'
 import SpiderWebCursor from '../components/SpiderWebCursor'
 import anhChopImg from '../images/anhchop.webp'
@@ -143,45 +143,38 @@ const CompanyHomePage = () => {
         style={{ transform: `scaleX(${scrollProgress})` }}
       />
       
-      <CardNav 
-         logo={undefined} 
-         logoAlt="Bilco Logo"
-         baseColor="#000000"
-         menuColor="#ffffff"
-         buttonBgColor="#2563eb"
-         buttonTextColor="#fff"
-         onCtaClick={() => window.location.href = '/login'}
-         items={[
-            {
-              label: "Dịch vụ",
-              bgColor: "#0f172a",
-              textColor: "#fff",
-              links: [
-                { label: "Nông nghiệp cao", href: "#services" },
-                { label: "Lắp đặt nhà máy", href: "#services" },
-                { label: "Khu giải trí", href: "#services" }
-              ]
-            },
-            {
-              label: "Giải pháp", 
-              bgColor: "#1e293b", 
-              textColor: "#fff", 
-              links: [
-                { label: "Quy trình", href: "#why-us" },
-                { label: "Công nghệ", href: "#why-us" }
-              ]
-            },
-            {
-              label: "Khách hàng",
-              bgColor: "#334155",
-              textColor: "#fff",
-              links: [
-                { label: "Đối tác tiêu biểu", href: "#info" },
-                { label: "Tin tức", href: "#news-all" },
-                { label: "Liên hệ", href: "#contact" }
-              ]
-            }
-         ]}
+
+      
+      <StaggeredMenu
+        position="right"
+        items={[
+             { label: 'Dịch vụ', link: '#services' },
+             { label: 'Giải pháp', link: '#why-us' },
+             { label: 'Khách hàng', link: '#info' },
+             { label: 'Đăng ký bản tin', link: '#news-all' },
+             { label: 'Liên hệ', link: '#contact' },
+             { label: 'Đăng nhập', link: '/login' }
+        ]}
+        socialItems={[
+             { label: 'Facebook', link: 'https://facebook.com' },
+             { label: 'Zalo', link: 'https://zalo.me' }
+        ]}
+        displaySocials={true}
+        displayItemNumbering={true}
+        menuButtonColor="#fff" // Initial color (will be managed by scroll logic/theme)
+        openMenuButtonColor="#fff"
+        changeMenuColorOnOpen={true}
+        colors={['#1e293b', '#0f172a']} // Dark pre-layers
+        logoUrl={undefined} // Use default text "Bilco" logic currently inside? Wait, StaggeredMenu has logic for img only?
+        // Let's modify StaggeredMenu to accept text logo? 
+        // Or just pass a transparent pixel if we rely on the internal logo fallback?
+        // The current StaggeredMenu I wrote defaults to an SVG if logoUrl is provided. If not... it uses a default SVG path.
+        // I should probably update StaggeredMenu to support text logo or accept the previous SVG.
+        // For now, let's stick to the implementation. The user provided logoUrl="/path".
+        // I will use a placeholder or leave it default.
+        accentColor="#2563eb"
+        onMenuOpen={() => console.log('Menu opened')}
+        onMenuClose={() => console.log('Menu closed')}
       />
 
       <main className="company-main">
