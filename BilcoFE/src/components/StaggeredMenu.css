@@ -198,8 +198,10 @@
     box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
 }
 
-right: auto;
-left: 0;
+
+[data-position='left'] .staggered-menu-panel {
+    right: auto;
+    left: 0;
 }
 
 .sm-prelayers {
