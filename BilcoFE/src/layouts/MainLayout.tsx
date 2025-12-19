@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import SnowCursor from '../components/SnowCursor'
 import './MainLayout.css'
+import Galaxy from '../components/Galaxy'
 
 type MainLayoutProps = {
   children: ReactNode
@@ -27,6 +28,18 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   return (
     <div className="layout-root">
+      {isAdmin && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}>
+           <Galaxy 
+              mouseRepulsion={true}
+              mouseInteraction={true}
+              density={1.5}
+              glowIntensity={0.5}
+              saturation={0.8}
+              hueShift={240}
+           />
+        </div>
+      )}
       <aside className="layout-sidebar">
         <div className="layout-logo">
           <span className="layout-logo-main">Bilco</span>
