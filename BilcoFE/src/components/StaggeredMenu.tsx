@@ -516,18 +516,20 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       </div>
       <header ref={headerRef} className="staggered-menu-header" aria-label="Main navigation header">
         <div ref={logoRef} className="sm-logo" aria-label="Logo">
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt="Logo"
-              className="sm-logo-img"
-              draggable={false}
-              width={110}
-              height={24}
-            />
-          ) : (
-            <span className="sm-logo-text" style={{ color: open ? '#fff' : (menuButtonColor || '#fff') }}>Bilco</span>
-          )}
+          <a href="/" style={{textDecoration: 'none', display: 'flex', alignItems: 'center', color: 'inherit'}}>
+            {logoUrl ? (
+                <img
+                src={logoUrl}
+                alt="Logo"
+                className="sm-logo-img"
+                draggable={false}
+                width={110}
+                height={24}
+                />
+            ) : (
+                <span className="sm-logo-text" style={{ color: open ? '#fff' : (menuButtonColor || '#fff') }}>Bilco</span>
+            )}
+          </a>
         </div>
         <button
           ref={toggleBtnRef}
@@ -560,7 +562,15 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             {items && items.length ? (
               items.map((it, idx) => (
                 <li className="sm-panel-itemWrap" key={it.label + idx}>
-                  <a className="sm-panel-item" href={it.link} aria-label={it.ariaLabel} data-index={idx + 1}>
+                  <a 
+                    className="sm-panel-item" 
+                    href={it.link} 
+                    aria-label={it.ariaLabel} 
+                    data-index={idx + 1}
+                    onClick={() => {
+                        closeMenu();
+                    }}
+                  >
                     <span className="sm-panel-itemLabel">{it.label}</span>
                   </a>
                 </li>

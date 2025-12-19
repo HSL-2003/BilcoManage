@@ -290,19 +290,25 @@
     color: #fff;
     /* Updated to White */
     font-weight: 700;
-    font-size: 2.25rem;
-    /* Reduced from 3.5rem */
+    font-size: 1.75rem;
+    /* Reduced to 1.75rem */
     cursor: pointer;
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
     transition:
-        background 0.25s,
+        transform 0.3s ease,
         color 0.25s;
     display: inline-block;
     text-decoration: none;
     padding-right: 0.5em;
     padding: 10px 0;
+}
+
+.sm-panel-item:hover {
+    color: var(--sm-accent, #5227ff);
+    transform: translateX(10px);
+    /* Slide effect */
 }
 
 .staggered-menu-panel .sm-socials-list .sm-socials-link {
@@ -327,10 +333,6 @@
     display: inline-block;
     will-change: transform;
     transform-origin: 50% 100%;
-}
-
-.sm-panel-item:hover {
-    color: var(--sm-accent, #5227ff);
 }
 
 .sm-panel-list[data-numbering] {
