@@ -388,18 +388,22 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const animateColor = useCallback(
     (opening: boolean) => {
       const btn = toggleBtnRef.current;
-      if (!btn) return;
-      colorTweenRef.current?.kill();
-      if (changeMenuColorOnOpen) {
-        const targetColor = opening ? openMenuButtonColor : menuButtonColor;
-        colorTweenRef.current = gsap.to(btn, {
-          color: targetColor,
-          delay: 0.18,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      } else {
-        gsap.set(btn, { color: menuButtonColor });
+      const logoText = logoRef.current?.querySelector('.sm-logo-text');
+      
+      if (btn) {
+        colorTweenRef.current?.kill();
+        if (changeMenuColorOnOpen) {
+          const targetColor = opening ? openMenuButtonColor : menuButtonColor;
+          colorTweenRef.current = gsap.to([btn, logoText].filter(Boolean), {
+            color: targetColor,
+            delay: 0.18,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        } else {
+             gsap.set(btn, { color: menuButtonColor });
+             if(logoText) gsap.set(logoText, { color: menuButtonColor });
+        }
       }
     },
     [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
@@ -512,14 +516,18 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       </div>
       <header ref={headerRef} className="staggered-menu-header" aria-label="Main navigation header">
         <div ref={logoRef} className="sm-logo" aria-label="Logo">
-          <img
-            src={logoUrl || '/src/assets/logos/reactbits-gh-white.svg'}
-            alt="Logo"
-            className="sm-logo-img"
-            draggable={false}
-            width={110}
-            height={24}
-          />
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt="Logo"
+              className="sm-logo-img"
+              draggable={false}
+              width={110}
+              height={24}
+            />
+          ) : (
+            <span className="sm-logo-text" style={{ color: open ? '#fff' : (menuButtonColor || '#fff') }}>Bilco</span>
+          )}
         </div>
         <button
           ref={toggleBtnRef}

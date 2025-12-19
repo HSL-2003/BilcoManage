@@ -4,6 +4,7 @@
     height: 100%;
     z-index: 40;
     pointer-events: none;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .staggered-menu-wrapper.fixed-wrapper {
@@ -38,6 +39,16 @@
     display: flex;
     align-items: center;
     user-select: none;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #fff;
+    gap: 0.5rem;
+}
+
+.sm-logo-text {
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: -0.5px;
 }
 
 .sm-logo-img {
@@ -141,7 +152,15 @@
     flex-direction: column;
     padding: 6em 2em 2em 2em;
     overflow-y: auto;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
     z-index: 10;
+}
+
+.staggered-menu-panel::-webkit-scrollbar {
+    display: none;
 }
 
 [data-position='left'] .staggered-menu-panel {
@@ -270,18 +289,20 @@
     position: relative;
     color: #fff;
     /* Updated to White */
-    font-weight: 600;
-    font-size: 3.5rem;
+    font-weight: 700;
+    font-size: 2.25rem;
+    /* Reduced from 3.5rem */
     cursor: pointer;
-    line-height: 1;
-    letter-spacing: -2px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
     transition:
         background 0.25s,
         color 0.25s;
     display: inline-block;
     text-decoration: none;
-    padding-right: 1.4em;
+    padding-right: 0.5em;
+    padding: 10px 0;
 }
 
 .staggered-menu-panel .sm-socials-list .sm-socials-link {
