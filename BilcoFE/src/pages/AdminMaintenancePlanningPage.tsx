@@ -21,8 +21,9 @@ const AdminMaintenancePlanningPage = () => {
     const { user } = useAuth()
     const [plans, setPlans] = useState<MaintenancePlan[]>([])
     const [loading, setLoading] = useState(true)
+    const [editingId, setEditingId] = useState<number | null>(null)
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-    
+
     // Form State
     const [formData, setFormData] = useState({
         tieuDe: '',
@@ -51,7 +52,49 @@ const AdminMaintenancePlanningPage = () => {
         fetchPlans()
     }, [])
 
-    const handleCreate = async (e: React.FormEvent) => {
+    const handleDelete = async (id: number) => {
+        if (!window.confirm('Bạn có chắc chắn muốn xóa kế hoạch này?')) return
+        try {
+            await import('../api/client').then(m => m.apiDelete(`/api/Kehoachbaotri/${id}`))
+            setPlans(prev => prev.filter(p => p.maKeHoach !== id))
+            alert('Đã xóa thành công!')
+        } catch (error) {
+            console.error('Delete failed', error)
+            alert('Xóa thất bại')
+        }
+    }
+
+    const handleEdit = (plan: MaintenancePlan) => {
+        setEditingId(plan.maKeHoach)
+        setFormData({
+            tieuDe: plan.tieuDe,
+            maThietBi: plan.maThietBi,
+            loaiBaoTri: plan.loaiBaoTri,
+            chuKyBaoTri: plan.chuKyBaoTri,
+            ngayBatDau: plan.ngayBatDau.split('T')[0],
+            ngayKetThuc: plan.ngayKetThuc.split('T')[0],
+            moTa: plan.moTa,
+            trangThai: plan.trangThai
+        })
+        setIsCreateModalOpen(true)
+    }
+
+    const openCreate = () => {
+        setEditingId(null)
+        setFormData({
+            tieuDe: '',
+            maThietBi: 0,
+            loaiBaoTri: 'Định kỳ',
+            chuKyBaoTri: 30,
+            ngayBatDau: new Date().toISOString().split('T')[0],
+            ngayKetThuc: new Date().toISOString().split('T')[0],
+            moTa: '',
+            trangThai: 'Lên kế hoạch'
+        })
+        setIsCreateModalOpen(true)
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!user?.maND) {
             alert('Bạn chưa đăng nhập hoặc không có mã người dùng!')
@@ -61,18 +104,26 @@ const AdminMaintenancePlanningPage = () => {
         try {
             const payload = {
                 ...formData,
-                maThietBi: Number(formData.maThietBi), // Ensure number
-                chuKyBaoTri: Number(formData.chuKyBaoTri), // Ensure number
+                maThietBi: Number(formData.maThietBi),
+                chuKyBaoTri: Number(formData.chuKyBaoTri),
                 nguoiTao: user.maND
             }
 
-            await apiPost('/api/Kehoachbaotri', payload)
-            alert('Tạo kế hoạch thành công!')
+            if (editingId) {
+                // UPDATE
+                await import('../api/client').then(m => m.apiPut(`/api/Kehoachbaotri/${editingId}`, payload))
+                alert('Cập nhật kế hoạch thành công!')
+            } else {
+                // CREATE
+                await apiPost('/api/Kehoachbaotri', payload)
+                alert('Tạo kế hoạch thành công!')
+            }
+            
             setIsCreateModalOpen(false)
             fetchPlans()
         } catch (error) {
-            console.error('Create plan failed', error)
-            alert('Có lỗi xảy ra khi tạo kế hoạch')
+            console.error('Save plan failed', error)
+            alert('Có lỗi xảy ra')
         }
     }
 
@@ -84,7 +135,7 @@ const AdminMaintenancePlanningPage = () => {
                         <h1 className="admin-title">Kế hoạch bảo trì</h1>
                         <p className="admin-subtitle">Quản lý lịch trình bảo trì thiết bị định kỳ</p>
                     </div>
-                    <button className="btn-primary" onClick={() => setIsCreateModalOpen(true)}>
+                    <button className="btn-primary" onClick={openCreate}>
                         + Lập kế hoạch mới
                     </button>
                 </div>
@@ -100,7 +151,7 @@ const AdminMaintenancePlanningPage = () => {
                                 <th>Chu kỳ (ngày)</th>
                                 <th>Ngày BĐ</th>
                                 <th>Trạng thái</th>
-                                <th>Ngày tạo</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -122,7 +173,20 @@ const AdminMaintenancePlanningPage = () => {
                                                 {p.trangThai}
                                             </span>
                                         </td>
-                                        <td>{new Date(p.ngayTao).toLocaleDateString()}</td>
+                                        <td>
+                                            <button 
+                                                onClick={() => handleEdit(p)}
+                                                style={{marginRight: '8px', border: 'none', background: 'none', color: '#1a73e8', cursor: 'pointer', fontWeight: 600}}
+                                            >
+                                                Sửa
+                                            </button>
+                                            <button 
+                                                onClick={() => handleDelete(p.maKeHoach)}
+                                                style={{border: 'none', background: 'none', color: '#d93025', cursor: 'pointer', fontWeight: 600}}
+                                            >
+                                                Xóa
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))
                             )}
@@ -133,8 +197,10 @@ const AdminMaintenancePlanningPage = () => {
                 {isCreateModalOpen && (
                     <div className="admin-modal-overlay">
                         <div className="admin-modal">
-                            <h2 className="admin-modal-title">Lập kế hoạch bảo trì</h2>
-                            <form onSubmit={handleCreate} className="form-grid">
+                            <h2 className="admin-modal-title">
+                                {editingId ? 'Cập nhật kế hoạch' : 'Lập kế hoạch bảo trì'}
+                            </h2>
+                            <form onSubmit={handleSubmit} className="form-grid">
                                 <label className="form-field">
                                     <span className="form-label">Tiêu đề kế hoạch</span>
                                     <input 
@@ -221,7 +287,9 @@ const AdminMaintenancePlanningPage = () => {
 
                                 <div className="form-actions" style={{marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'flex-end'}}>
                                     <button type="button" className="btn-secondary" onClick={() => setIsCreateModalOpen(false)}>Hủy</button>
-                                    <button type="submit" className="btn-primary">Lưu kế hoạch</button>
+                                    <button type="submit" className="btn-primary">
+                                        {editingId ? 'Cập nhật' : 'Lưu kế hoạch'}
+                                    </button>
                                 </div>
                             </form>
                         </div>
