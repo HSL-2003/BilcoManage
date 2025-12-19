@@ -102,7 +102,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   // SCROLL LOGIC
   useLayoutEffect(() => {
-      if(open) return; // Do not mess with layout if menu open
+      // Do not mess with layout if menu is open
+      if(open) return; 
 
       const header = headerRef.current;
       const logo = logoRef.current;
@@ -117,72 +118,92 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
           const currentY = window.scrollY;
           const scrollingDown = currentY > lastScrollY;
+          // Threshold: 50px
           const threshold = 50;
           
           const shouldShrink = currentY > threshold && scrollingDown;
+          // Expand if scrolling up (any amount) or at the very top
+          const shouldExpand = !scrollingDown || currentY <= threshold; 
 
           if (shouldShrink && !isShrunk) {
               isShrunk = true;
-              // Shrink: Hide Logo, Move Toggle to Left (or ensure it's left)
-              // Current layout: justify-content space-between. Logo Left, Toggle Right.
-              // To move Toggle Left: We can absolute position it or modify flex.
-              // Let's use Flip-like logic or absolute.
               
-              // Fade out logo
+              // 1. Measure current position (from Right side usually)
+              const rect = toggle.getBoundingClientRect();
+              
+              // 2. Fade out logo immediately
               gsap.to(logo, { opacity: 0, x: -20, pointerEvents: 'none', duration: 0.3 });
-              
-              // Move Toggle to the left.
-              // Since it's flex, we can make the header justify-content: flex-start?
-              // But animation?
-              // Let's assume absolute positioning for the toggle might be easiest for movement, 
-              // OR translate X.
-              // Distance to move = -(HeaderWidth - Padding - ToggleWidth - Padding) approx?
-              // A safer way: Use a class or state variable? GSAP is better.
-              
-              // Just hide logo and title text, keep only Hamburger Icon.
-              // And "thu nhỏ thành hình dấu 3 gạch ở bên trái".
-              // So the toggle needs to jump to the left.
-              
-              gsap.to(toggle, { 
+              gsap.to('.sm-toggle-textWrap', { width: 0, opacity: 0, duration: 0.3 });
+
+              // 3. Switch to FIXED to follow scroll, but start at current visual position
+              // We set left/top to fixed values matching the current rect
+              gsap.set(toggle, {
                   position: 'fixed',
+                  left: rect.left,
+                  top: rect.top,
+                  right: 'auto',
+                  margin: 0
+              });
+
+              // 4. Animate to target (Left: 20px, Top: 20px)
+              gsap.to(toggle, { 
                   left: '20px', 
                   top: '20px',
-                  right: 'auto',
-                  x: 0,
-                  y: 0,
-                  color: menuButtonColor, // ensure color
-                  duration: 0.5,
-                  ease: 'power3.inOut'
+                  color: menuButtonColor, 
+                  duration: 0.6,
+                  ease: 'power4.inOut'
               });
 
-              // Also hide the "Menu" text, ensuring only icon is there?
-              // User said "thu nhỏ thành hình dấu 3 gạch".
-               gsap.to('.sm-toggle-textWrap', { width: 0, opacity: 0, duration: 0.3 });
-
-          } else if (currentY < lastScrollY && isShrunk) { // Scroll Up
+          } else if (shouldExpand && isShrunk) {
               isShrunk = false;
-              // Expand
               
-              // Reset Toggle
-               gsap.to(toggle, { 
-                  position: 'absolute', // Back to flow (relative/absolute within relative header)
-                  // Actually header is absolute top 0. Toggle is in flow.
-                  // We need to revert carefully.
-                  // If we strip 'position: fixed', it goes back to flow?
-                  // GSAP clearProps is useful here.
-                  left: 'auto',
-                  top: 'auto',
-                  right: 'auto',
-                  clearProps: 'position,left,top,right',
-                  duration: 0.5,
-                  ease: 'power3.inOut'
+              // 1. Measure current fixed position
+              const rect = toggle.getBoundingClientRect();
+
+              // 2. Kill ongoing tweens on toggle to prevent conflicts
+              gsap.killTweensOf(toggle);
+
+              // 3. We want to animate BACK to the original position.
+              // However, "original" is relative/flex. 
+              // We can't easily fallback to "right: 2em" with a coordinate tween easily without knowing where it is.
+              // Trick: Use the header's position to calculate target.
+              // Header is absolute top:0 left:0.
+              // Target Right position is approx windowWidth - paddingRight - buttonWidth.
+              // Let's assume standard padding 2em which is ~32px.
+              // But simpler: Animate to calc(100vw - someOffset) then swap.
+              
+              // Actually, simply removing 'fixed' and letting it snap is jerky.
+              // Better: Animate to the computed destination, THEN clearProps.
+              
+              // Calculate destination X/Y relative to viewport
+              // It's originally `right: 0` inside a padded header (padding: 2em).
+              // So right edge is 2em (32px) from viewport right?
+              // The header has padding: 2em.
+              // So target Left = window.innerWidth - rect.width - 32 (approx).
+              // Top = 32 (2em).
+              
+              const targetRight = 32; // 2em approx
+              const targetTop = 32;
+              const targetLeft = window.innerWidth - rect.width - targetRight;
+              
+              // Animate from current fixed Left to target Left
+              gsap.to(toggle, {
+                  left: targetLeft,
+                  top: targetTop,
+                  duration: 0.6,
+                  ease: 'power4.inOut',
+                  onComplete: () => {
+                      // Reset to CSS flow
+                      gsap.set(toggle, { 
+                          clearProps: 'position,left,top,right,margin,color'
+                      });
+                      // Ensure color is reset if needed, though clearProps handles inline styles
+                  }
               });
 
-               // Show Logo
-               gsap.to(logo, { opacity: 1, x: 0, pointerEvents: 'auto', duration: 0.3, delay: 0.2 });
-               
-               // Show Text
-               gsap.to('.sm-toggle-textWrap', { width: 'auto', opacity: 1, duration: 0.3, delay: 0.2 });
+              // Show Logo & Text
+               gsap.to(logo, { opacity: 1, x: 0, pointerEvents: 'auto', duration: 0.3, delay: 0.3 });
+               gsap.to('.sm-toggle-textWrap', { width: 'auto', opacity: 1, duration: 0.3, delay: 0.3 });
           }
           
           lastScrollY = currentY;
