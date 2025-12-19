@@ -288,10 +288,10 @@
 .sm-panel-item {
     position: relative;
     color: #fff;
-    /* Updated to White */
-    font-weight: 700;
-    font-size: 1.75rem;
-    /* Reduced to 1.75rem */
+    font-weight: 600;
+    /* Refined to 600 */
+    font-size: 2rem;
+    /* Adjusted to 2rem for balance */
     cursor: pointer;
     line-height: 1.2;
     letter-spacing: -0.01em;
@@ -299,10 +299,13 @@
     transition:
         transform 0.3s ease,
         color 0.25s;
-    display: inline-block;
+    display: inline-flex;
+    /* Use flex for alignment */
+    align-items: baseline;
     text-decoration: none;
-    padding-right: 0.5em;
     padding: 10px 0;
+    gap: 15px;
+    /* Space between number and text */
 }
 
 .sm-panel-item:hover {
@@ -339,19 +342,21 @@
     counter-reset: smItem;
 }
 
-.sm-panel-list[data-numbering] .sm-panel-item::after {
+.sm-panel-list[data-numbering] .sm-panel-item::before {
     counter-increment: smItem;
     content: counter(smItem, decimal-leading-zero);
-    position: absolute;
-    top: 0.1em;
-    right: 2.8em;
-    font-size: 18px;
+    font-size: 1rem;
+    /* Smaller number */
     font-weight: 400;
     color: var(--sm-accent, #5227ff);
-    letter-spacing: 0;
-    pointer-events: none;
-    user-select: none;
+    font-family: 'Inter', monospace;
     opacity: var(--sm-num-opacity, 0);
+    transform: translateY(-2px);
+}
+
+/* Remove old after */
+.sm-panel-list[data-numbering] .sm-panel-item::after {
+    display: none;
 }
 
 @media (max-width: 1024px) {
