@@ -184,6 +184,16 @@ function App() {
           )
         }
       />
+      <Route
+        path="/admin/permissions"
+        element={
+          isAuthenticated && isAdmin ? (
+            <AdminPermissionsPage />
+          ) : (
+             <Navigate to={isAuthenticated ? '/' : '/login'} replace />
+          )
+        }
+      />
       
       {/* Mặc định */}
       <Route path="*" element={<Navigate to={isAuthenticated ? '/' : '/login'} replace />} />
