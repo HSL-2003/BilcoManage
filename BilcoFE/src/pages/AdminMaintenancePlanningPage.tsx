@@ -139,13 +139,13 @@ const AdminMaintenancePlanningPage = () => {
     }
 
     const getStatusBadge = (status: string) => {
-        switch(status) {
-            case 'Hoàn thành': return 'badge-success'
-            case 'Đang thực hiện': return 'badge-progress' // Assuming you have this or similar in admin.css, otherwise badge-warning
-            case 'Lên kế hoạch': return 'badge-info' // Or similar
-            case 'Hủy': return 'badge-danger'
-            default: return 'badge-warning'
-        }
+        if (!status) return 'badge-default';
+        const s = status.toLowerCase();
+        if (s.includes('hoàn thành')) return 'badge-success';
+        if (s.includes('thực hiện')) return 'badge-info';
+        if (s.includes('kế hoạch')) return 'badge-warning';
+        if (s === 'hủy' || s.includes('cancel')) return 'badge-danger';
+        return 'badge-default';
     }
 
     return (
@@ -159,14 +159,14 @@ const AdminMaintenancePlanningPage = () => {
                     <div style={{display: 'flex', gap: '16px', alignItems: 'center'}}>
                         <input 
                             type="text" 
-                            placeholder="Tìm kiếm kế hoạch..." 
+                            placeholder="Tìm kiếm..." 
                             className="admin-search-input"
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
-                            style={{width: '250px'}}
+                            style={{width: '280px'}}
                         />
                         <button className="btn-admin-primary" onClick={openCreate}>
-                            + Lập kế hoạch mới
+                            + Kế hoạch mới
                         </button>
                     </div>
                 </header>
