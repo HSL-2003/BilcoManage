@@ -152,6 +152,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                     <NavLink to="/admin/api-stats" className="layout-nav-item sub-item">
                        Thống kê API
                     </NavLink>
+                    <NavLink to="/admin/permissions" className="layout-nav-item sub-item">
+                       Phân quyền
+                    </NavLink>
                   </div>
                 )}
               </div>
