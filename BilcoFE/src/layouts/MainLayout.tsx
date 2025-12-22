@@ -125,6 +125,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                      <NavLink to="/maintenance" className="layout-nav-item sub-item">
                        Bảo trì & Kiểm tra
                     </NavLink>
+                     <NavLink to="/admin/maintenance-plans" className="layout-nav-item sub-item">
+                        Kế hoạch bảo trì
+                     </NavLink>
                   </div>
                 )}
               </div>

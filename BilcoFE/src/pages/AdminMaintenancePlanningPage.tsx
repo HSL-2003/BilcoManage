@@ -15,6 +15,8 @@ interface MaintenancePlan {
   trangThai: string
   nguoiTao: number
   ngayTao: string
+  tenNguoiTao?: string
+  tenThietBi?: string
 }
 
 const AdminMaintenancePlanningPage = () => {
@@ -123,6 +125,7 @@ const AdminMaintenancePlanningPage = () => {
             fetchPlans()
         } catch (error) {
             console.error('Save plan failed', error)
+            console.log(error)
             alert('Có lỗi xảy ra')
         }
     }
@@ -146,7 +149,8 @@ const AdminMaintenancePlanningPage = () => {
                             <tr>
                                 <th>Mã KH</th>
                                 <th>Tiêu đề</th>
-                                <th>Thiết bị (ID)</th>
+                                <th>Thiết bị</th>
+                                <th>Người tạo</th>
                                 <th>Loại</th>
                                 <th>Chu kỳ (ngày)</th>
                                 <th>Ngày BĐ</th>
@@ -156,15 +160,18 @@ const AdminMaintenancePlanningPage = () => {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan={8} style={{textAlign: 'center', padding: '24px'}}>Đang tải...</td></tr>
+                                <tr><td colSpan={9} style={{textAlign: 'center', padding: '24px'}}>Đang tải...</td></tr>
                             ) : plans.length === 0 ? (
-                                <tr><td colSpan={8} style={{textAlign: 'center', padding: '24px'}}>Chưa có kế hoạch nào</td></tr>
+                                <tr><td colSpan={9} style={{textAlign: 'center', padding: '24px'}}>Chưa có kế hoạch nào</td></tr>
                             ) : (
                                 plans.map(p => (
                                     <tr key={p.maKeHoach}>
                                         <td>#{p.maKeHoach}</td>
                                         <td style={{fontWeight: 500}}>{p.tieuDe}</td>
-                                        <td>{p.maThietBi}</td>
+                                        <td>
+                                            <div style={{fontWeight: 500}}>{p.tenThietBi || `ID: ${p.maThietBi}`}</div>
+                                        </td>
+                                        <td>{p.tenNguoiTao || `ID: ${p.nguoiTao}`}</td>
                                         <td>{p.loaiBaoTri}</td>
                                         <td>{p.chuKyBaoTri}</td>
                                         <td>{new Date(p.ngayBatDau).toLocaleDateString()}</td>
