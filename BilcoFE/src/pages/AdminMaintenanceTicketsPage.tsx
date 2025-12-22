@@ -65,11 +65,18 @@ const AdminMaintenanceTicketsPage = () => {
     fetchItems()
   }, [])
 
-  const filteredItems = items.filter(i => 
-    (i.tenThietBi?.toLowerCase() || '').includes(searchTerm.toLowerCase()) || 
-    (i.trangThai?.toLowerCase() || '').includes(searchTerm.toLowerCase()) || 
-    i.maPhieu.toString().includes(searchTerm)
-  )
+  const filteredItems = items.filter(i => {
+    // Search Filter
+    const matchesSearch = (i.tenThietBi?.toLowerCase() || '').includes(searchTerm.toLowerCase()) || 
+                          (i.trangThai?.toLowerCase() || '').includes(searchTerm.toLowerCase()) || 
+                          i.maPhieu.toString().includes(searchTerm)
+    
+    // Role Filter: Admin sees all, User sees only their assigned tickets
+    const isAdmin = user?.role === 'admin'
+    const isOwner = i.nhanVienThucHien === user?.maND
+
+    return matchesSearch && (isAdmin || isOwner)
+  })
 
   const handleAddNew = () => {
     setEditingId(null)
