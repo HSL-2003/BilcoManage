@@ -175,10 +175,13 @@ body {
     border: 1px solid rgba(148, 163, 184, 0.3);
 }
 
-font-weight: 700;
-color: var(--admin-text);
-/* Solid color, no gradient */
-letter-spacing: -0.5px;
+
+.admin-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--admin-text);
+    /* Solid color, no gradient */
+    letter-spacing: -0.5px;
 }
 
 .admin-subtitle {

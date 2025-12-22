@@ -13,6 +13,7 @@ interface ApiLog {
 
 const ApiStatsPage = () => {
   const [logs, setLogs] = useState<ApiLog[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     // Load logs from localStorage
@@ -36,6 +37,12 @@ const ApiStatsPage = () => {
     return () => clearInterval(interval)
   }, [])
 
+  const filteredLogs = logs.filter(log => 
+    log.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    log.method.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    log.status.toString().includes(searchTerm)
+  )
+
   const clearLogs = () => {
     localStorage.removeItem('bilco_api_logs')
     setLogs([])
@@ -52,7 +59,17 @@ const ApiStatsPage = () => {
     <MainLayout>
       <div style={{ padding: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 600 }}>Thống Kê </h1>
+          <div style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
+             <h1 style={{ fontSize: '24px', fontWeight: 600, margin: 0 }}>Thống Kê API</h1>
+             <input 
+                type="text" 
+                placeholder="Tìm endpoint, method..." 
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className='admin-search-input'
+                style={{width: '240px'}}
+             />
+          </div>
           <button 
             onClick={clearLogs}
             style={{ 
@@ -80,14 +97,14 @@ const ApiStatsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {logs.length === 0 ? (
+              {filteredLogs.length === 0 ? (
                  <tr>
                     <td colSpan={5} style={{ padding: '24px', textAlign: 'center', color: '#666' }}>
-                        Chưa có dữ liệu nào được ghi nhận.
+                        {searchTerm ? 'Không tìm thấy kết quả.' : 'Chưa có dữ liệu nào được ghi nhận.'}
                     </td>
                  </tr>
               ) : (
-                logs.map((log) => (
+                filteredLogs.map((log) => (
                     <tr key={log.id} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={{ padding: '12px' }}>{new Date(log.timestamp).toLocaleTimeString()}</td>
                     <td style={{ padding: '12px', fontWeight: 600 }}>{log.method}</td>
