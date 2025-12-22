@@ -1,4 +1,5 @@
 import { type FormEvent, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import { apiGet, apiPost, apiPut, apiDelete } from '../api/client'
 import './admin.css' // Import custom admin styles
@@ -322,6 +323,33 @@ const AdminDashboard = () => {
                   + Cấp tài khoản mới
                </button>
           </header>
+
+          {/* QUICK ACCESS GRID */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+              <Link to="/admin/permissions" className="admin-card nav-card" style={{textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px', textAlign: 'center', transition: 'transform 0.2s', border: '1px solid rgba(59, 130, 246, 0.3)', background: 'linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9))'}}>
+                  <div style={{fontSize: '32px', marginBottom: '12px'}}>🛡️</div>
+                  <h3 style={{margin: 0, color: '#fff', fontSize: '18px'}}>Phân Quyền</h3>
+                  <p style={{margin: '8px 0 0', color: '#94a3b8', fontSize: '13px'}}>Quản lý role & cấp quyền</p>
+              </Link>
+              
+              <Link to="/admin/maintenance-plans" className="admin-card nav-card" style={{textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px', textAlign: 'center', transition: 'transform 0.2s'}}>
+                  <div style={{fontSize: '32px', marginBottom: '12px'}}>📅</div>
+                  <h3 style={{margin: 0, color: '#fff', fontSize: '18px'}}>Kế hoạch bảo trì</h3>
+                  <p style={{margin: '8px 0 0', color: '#94a3b8', fontSize: '13px'}}>Lịch trình & phân công</p>
+              </Link>
+              
+              <Link to="/admin/incidents" className="admin-card nav-card" style={{textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px', textAlign: 'center', transition: 'transform 0.2s'}}>
+                  <div style={{fontSize: '32px', marginBottom: '12px'}}>🚨</div>
+                  <h3 style={{margin: 0, color: '#fff', fontSize: '18px'}}>Sự Cố & Báo Cáo</h3>
+                  <p style={{margin: '8px 0 0', color: '#94a3b8', fontSize: '13px'}}>Xử lý vấn đề kỹ thuật</p>
+              </Link>
+
+               <Link to="/admin/api-stats" className="admin-card nav-card" style={{textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px', textAlign: 'center', transition: 'transform 0.2s'}}>
+                  <div style={{fontSize: '32px', marginBottom: '12px'}}>📊</div>
+                  <h3 style={{margin: 0, color: '#fff', fontSize: '18px'}}>Thống Kê API</h3>
+                  <p style={{margin: '8px 0 0', color: '#94a3b8', fontSize: '13px'}}>Monitor system traffic</p>
+              </Link>
+          </div>
 
         <AdminGameGallery />
 
