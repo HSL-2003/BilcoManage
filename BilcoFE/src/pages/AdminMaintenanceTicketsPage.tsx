@@ -22,6 +22,14 @@ interface PhieuBaoTri {
   trangThai: string
   tenKeHoach?: string
   tenThietBi?: string
+  // New API Fields
+  nguoiTao: number
+  nguoiDuyet?: number
+  trangThaiDuyet?: string
+  lyDoTuChoi?: string
+  ngayDuyet?: string
+  tenNguoiTao?: string
+  tenNguoiDuyet?: string
 }
 
 const AdminMaintenanceTicketsPage = () => {
@@ -33,6 +41,11 @@ const AdminMaintenanceTicketsPage = () => {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingId, setEditingId] = useState<number | null>(null)
+  
+  // Approval/Rejection State
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false)
+  const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
+  const [actionNote, setActionNote] = useState('') // Used for both Approve Note and Reject Reason
   
   const [formData, setFormData] = useState({
     maKeHoach: 0,
@@ -52,7 +65,13 @@ const AdminMaintenanceTicketsPage = () => {
     try {
       setLoading(true)
       const data = await apiGet<PhieuBaoTri[]>('/api/PhieuBaoTri')
-      setItems(data || [])
+      // Sort: Pending approval first, then by date
+      const sorted = (data || []).sort((a, b) => {
+         if (a.trangThaiDuyet === 'Chờ duyệt' && b.trangThaiDuyet !== 'Chờ duyệt') return -1
+         if (a.trangThaiDuyet !== 'Chờ duyệt' && b.trangThaiDuyet === 'Chờ duyệt') return 1
+         return new Date(b.thoiGianBatDau).getTime() - new Date(a.thoiGianBatDau).getTime()
+      })
+      setItems(sorted)
     } catch (err) {
       console.error(err)
       alert('Không thể tải danh sách phiếu bảo trì.')
@@ -69,6 +88,7 @@ const AdminMaintenanceTicketsPage = () => {
     // Search Filter
     const matchesSearch = (i.tenThietBi?.toLowerCase() || '').includes(searchTerm.toLowerCase()) || 
                           (i.trangThai?.toLowerCase() || '').includes(searchTerm.toLowerCase()) || 
+                          (i.trangThaiDuyet?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
                           i.maPhieu.toString().includes(searchTerm)
     
     // Role Filter: Admin sees all, User sees only their assigned tickets
@@ -154,11 +174,59 @@ const AdminMaintenanceTicketsPage = () => {
     }
   }
 
+  const handleApprove = async (id: number) => {
+      // For approval, we might want a simple confirmation or an optional note. 
+      // API requires body: { maPhieu, ghiChu }
+      const note = window.prompt('Nhập ghi chú duyệt (tùy chọn):', 'Đã kiểm tra OK')
+      if (note === null) return // Cancelled
+
+      try {
+          await apiPost(`/api/PhieuBaoTri/${id}/duyet`, { maPhieu: id, ghiChu: note })
+          alert('Đã duyệt phiếu thành công!')
+          fetchItems()
+      } catch (e) {
+          console.error(e)
+          alert('Duyệt thất bại.')
+      }
+  }
+
+  const handleReject = (id: number) => {
+      setSelectedTicketId(id)
+      setActionNote('')
+      setIsRejectModalOpen(true)
+  }
+
+  const confirmReject = async () => {
+      if (!selectedTicketId || !actionNote.trim()) {
+          alert('Vui lòng nhập lý do từ chối.')
+          return
+      }
+      try {
+          await apiPost(`/api/PhieuBaoTri/${selectedTicketId}/tuchoi`, { maPhieu: selectedTicketId, lyDoTuChoi: actionNote })
+          alert('Đã từ chối phiếu.')
+          setIsRejectModalOpen(false)
+          fetchItems()
+      } catch (e) {
+          console.error(e)
+          alert('Thao tác thất bại.')
+      }
+  }
+
   const getStatusBadge = (s: string) => {
-      if(s === 'Hoàn thành') return 'badge-success'
-      if(s === 'Đang thực hiện') return 'badge-info'
-      if(s === 'Hủy') return 'badge-danger'
-      return 'badge-default'
+      if (!s) return 'badge-default'
+      const lower = s.toLowerCase()
+      if(lower === 'hoàn thành' || lower === 'đã duyệt') return 'badge-success'
+      if(lower === 'đang thực hiện' || lower === 'chờ duyệt') return 'badge-warning' // Orange for pending/progress
+      if(lower === 'hủy' || lower === 'từ chối') return 'badge-danger'
+      return 'badge-info'
+  }
+
+  const getApprovalBadge = (s?: string) => {
+      if (!s) return null
+      const lower = s.toLowerCase()
+      if (lower.includes('duyệt') && !lower.includes('chờ')) return <span className="badge badge-success">Đã duyệt</span>
+      if (lower.includes('từ chối')) return <span className="badge badge-danger">Từ chối</span>
+      return <span className="badge badge-warning">Chờ duyệt</span>
   }
 
   return (
@@ -191,7 +259,7 @@ const AdminMaintenanceTicketsPage = () => {
                   <th>Thiết Bị</th>
                   <th>Nhân viên</th>
                   <th>Thời gian</th>
-                  <th>Kết quả</th>
+                  <th>Duyệt</th>
                   <th>Trạng thái</th>
                   <th style={{textAlign: 'right'}}>Thao tác</th>
                 </tr>
@@ -218,19 +286,37 @@ const AdminMaintenanceTicketsPage = () => {
                                     {new Date(item.thoiGianBatDau).toLocaleTimeString()} - {new Date(item.thoiGianKetThuc).toLocaleTimeString()}
                                 </div>
                             </td>
-                            <td>{item.ketQua}</td>
+                            <td>
+                                {item.trangThaiDuyet ? getApprovalBadge(item.trangThaiDuyet) : <span style={{color: '#999', fontSize: '12px'}}>-</span>}
+                                {item.lyDoTuChoi && <div style={{fontSize: '10px', color: '#f87171', maxWidth: '100px'}}>{item.lyDoTuChoi}</div>}
+                            </td>
                             <td>
                                 <span className={`badge ${getStatusBadge(item.trangThai)}`}>
                                     {item.trangThai}
                                 </span>
                             </td>
                             <td>
-                                {user?.role === 'admin' && (
-                                    <div style={{display: 'flex', gap: '8px', justifyContent: 'flex-end'}}>
-                                        <button className="btn-admin-secondary" onClick={() => handleEdit(item)}>Sửa</button>
-                                        <button className="btn-admin-danger" style={{background: 'none', color: '#dc3545', border: '1px solid #dc3545'}} onClick={() => handleDelete(item.maPhieu)}>Xóa</button>
-                                    </div>
-                                )}
+                                <div style={{display: 'flex', gap: '8px', justifyContent: 'flex-end'}}>
+                                    {/* Action Buttons */}
+                                    {user?.role === 'admin' && (
+                                        <>
+                                            {/* Show Approve/Reject if it's pending (or even if approved, to re-approve) */}
+                                            {(!item.trangThaiDuyet || item.trangThaiDuyet.includes('Chờ')) && (
+                                                <>
+                                                 <button className="btn-admin-success" onClick={() => handleApprove(item.maPhieu)} style={{padding: '4px 8px', fontSize: '11px', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)'}}>
+                                                    ✓ Duyệt
+                                                 </button>
+                                                 <button className="btn-admin-danger" onClick={() => handleReject(item.maPhieu)} style={{padding: '4px 8px', fontSize: '11px', background: 'rgba(239, 68, 68, 0.2)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.3)'}}>
+                                                    ✕ Từ chối
+                                                 </button>
+                                                </>
+                                            )}
+                                        
+                                            <button className="btn-admin-secondary" onClick={() => handleEdit(item)}>Sửa</button>
+                                            <button className="btn-admin-danger" style={{background: 'none', color: '#dc3545', border: '1px solid #dc3545'}} onClick={() => handleDelete(item.maPhieu)}>Xóa</button>
+                                        </>
+                                    )}
+                                </div>
                             </td>
                         </tr>
                     ))
@@ -332,6 +418,28 @@ const AdminMaintenanceTicketsPage = () => {
                             </button>
                         </div>
                     </form>
+                </div>
+             </div>
+        )}
+
+        {/* REJECT MODAL */}
+        {isRejectModalOpen && (
+             <div className="modal-overlay">
+                <div className="modal-content" style={{width: '400px'}}>
+                    <h3 style={{marginTop: 0}}>Từ chối phiếu bảo trì</h3>
+                    <p>Vui lòng nhập lý do từ chối:</p>
+                    <textarea 
+                        className="admin-input" 
+                        rows={4}
+                        placeholder="Lý do..."
+                        value={actionNote}
+                        onChange={e => setActionNote(e.target.value)}
+                        autoFocus
+                    />
+                     <div style={{display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px'}}>
+                        <button className="btn-admin-outline" onClick={() => setIsRejectModalOpen(false)}>Hủy</button>
+                        <button className="btn-admin-danger" onClick={confirmReject}>Xác nhận Từ chối</button>
+                    </div>
                 </div>
              </div>
         )}
