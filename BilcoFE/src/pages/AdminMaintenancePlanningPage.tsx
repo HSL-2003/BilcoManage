@@ -26,6 +26,7 @@ const AdminMaintenancePlanningPage = () => {
     const [loading, setLoading] = useState(true)
     const [editingId, setEditingId] = useState<number | null>(null)
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('')
 
     // Form State
     const [formData, setFormData] = useState({
@@ -54,6 +55,12 @@ const AdminMaintenancePlanningPage = () => {
     useEffect(() => {
         fetchPlans()
     }, [])
+
+    const filteredPlans = plans.filter(p => 
+        p.tieuDe.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        p.maKeHoach.toString().includes(searchTerm) ||
+        (p.tenThietBi && p.tenThietBi.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
 
     const handleDelete = async (id: number) => {
         if (!window.confirm('Bạn có chắc chắn muốn xóa kế hoạch này?')) return
@@ -149,7 +156,15 @@ const AdminMaintenancePlanningPage = () => {
                         <h1 className="admin-title">Kế hoạch bảo trì</h1>
                         <p className="admin-subtitle">Quản lý lịch trình bảo trì thiết bị định kỳ</p>
                     </div>
-                    <div>
+                    <div style={{display: 'flex', gap: '16px', alignItems: 'center'}}>
+                        <input 
+                            type="text" 
+                            placeholder="Tìm kiếm kế hoạch..." 
+                            className="admin-search-input"
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            style={{width: '250px'}}
+                        />
                         <button className="btn-admin-primary" onClick={openCreate}>
                             + Lập kế hoạch mới
                         </button>
@@ -180,10 +195,12 @@ const AdminMaintenancePlanningPage = () => {
                             <tbody>
                                 {loading ? (
                                     <tr><td colSpan={9} style={{textAlign: 'center', padding: '24px'}}>Đang tải...</td></tr>
-                                ) : plans.length === 0 ? (
-                                    <tr><td colSpan={9} style={{textAlign: 'center', padding: '24px'}}>Chưa có kế hoạch nào</td></tr>
+                                ) : filteredPlans.length === 0 ? (
+                                    <tr><td colSpan={9} style={{textAlign: 'center', padding: '24px'}}>
+                                        {searchTerm ? 'Không tìm thấy kết quả phù hợp' : 'Chưa có kế hoạch nào'}
+                                    </td></tr>
                                 ) : (
-                                    plans.map(p => (
+                                    filteredPlans.map(p => (
                                         <tr key={p.maKeHoach}>
                                             <td>#{p.maKeHoach}</td>
                                             <td style={{fontWeight: 600, color: '#e2e8f0'}}>{p.tieuDe}</td>

@@ -83,7 +83,7 @@ const ApiStatsPage = () => {
               {logs.length === 0 ? (
                  <tr>
                     <td colSpan={5} style={{ padding: '24px', textAlign: 'center', color: '#666' }}>
-                        Chưa có dữ liệu API call nào được ghi nhận.
+                        Chưa có dữ liệu nào được ghi nhận.
                     </td>
                  </tr>
               ) : (

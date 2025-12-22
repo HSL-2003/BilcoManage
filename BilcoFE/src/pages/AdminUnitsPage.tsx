@@ -17,6 +17,7 @@ const AdminUnitsPage = () => {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingId, setEditingId] = useState<number | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
   
   const initialForm: Partial<DonViTinh> = {
     tenDVT: '',
@@ -42,6 +43,11 @@ const AdminUnitsPage = () => {
   useEffect(() => {
     fetchItems()
   }, [])
+
+  const filteredItems = items.filter(i => 
+    i.tenDVT.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    (i.moTa && i.moTa.toLowerCase().includes(searchTerm.toLowerCase()))
+  )
 
   // Form Handlers
   const handleAddNew = () => {
@@ -102,7 +108,15 @@ const AdminUnitsPage = () => {
               Danh sách các đơn vị tính cho vật tư (cái, bộ, kg, mét...).
             </p>
           </div>
-          <div style={{display: 'flex', gap: '12px'}}>
+          <div style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
+             <input 
+                type="text" 
+                placeholder="Tìm kiếm đơn vị..." 
+                className="admin-search-input"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                style={{width: '200px'}}
+             />
              <button className="btn-admin-outline" onClick={() => window.history.back()}>Quay lại</button>
              <button className="btn-admin-primary" onClick={handleAddNew}>+ Thêm ĐVT mới</button>
           </div>
@@ -138,10 +152,12 @@ const AdminUnitsPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {items.length === 0 ? (
-                    <tr><td colSpan={4} style={{textAlign: 'center', padding: '20px'}}>Chưa có dữ liệu.</td></tr>
+                {filteredItems.length === 0 ? (
+                    <tr><td colSpan={4} style={{textAlign: 'center', padding: '20px'}}>
+                        {searchTerm ? 'Không tìm thấy kết quả.' : 'Chưa có dữ liệu.'}
+                    </td></tr>
                 ) : (
-                    items.map(item => (
+                    filteredItems.map(item => (
                         <tr key={item.maDVT}>
                         <td>#{item.maDVT}</td>
                         <td style={{fontWeight: 600, color: '#1a73e8'}}>{item.tenDVT}</td>
